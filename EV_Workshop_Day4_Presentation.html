@@ -1,0 +1,3201 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width,initial-scale=1" name="viewport" />
+  <title>Intelligent EV Energy Systems — Workshop Day 4</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Playfair+Display:wght@700;800;900&amp;display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #111118;
+      --bg3: #16161f;
+      --bg4: #1c1c28;
+      --text: #e8e6f0;
+      --text2: #9896a8;
+      --muted: #5c5a6e;
+      --green: #00e5a0;
+      --green-d: #00e5a020;
+      --blue: #5b8cff;
+      --blue-d: #5b8cff20;
+      --red: #ff6b6b;
+      --red-d: #ff6b6b20;
+      --gold: #f0c040;
+      --gold-d: #f0c04020;
+      --cyan: #00d4ff;
+      --cyan-d: #00d4ff15;
+      --border: #1e1e2a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden
+    }
+
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px 72px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(91, 140, 255, .03) 0%, transparent 60%);
+      pointer-events: none
+    }
+
+    .sn {
+      position: absolute;
+      top: 28px;
+      right: 36px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 2px
+    }
+
+    .sf {
+      position: absolute;
+      bottom: 20px;
+      left: 36px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px
+    }
+
+    .tag-green {
+      background: var(--green-d);
+      color: var(--green);
+      border: 1px solid rgba(0, 229, 160, .2)
+    }
+
+    .tag-red {
+      background: var(--red-d);
+      color: var(--red);
+      border: 1px solid rgba(255, 107, 107, .2)
+    }
+
+    .tag-gold {
+      background: var(--gold-d);
+      color: var(--gold);
+      border: 1px solid rgba(240, 192, 64, .2)
+    }
+
+    .tag-intro {
+      background: var(--cyan-d);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 212, 255, .2)
+    }
+
+    .st {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: clamp(24px, 3vw, 42px);
+      line-height: 1.15;
+      margin-bottom: 16px;
+      max-width: 900px
+    }
+
+    .ss {
+      font-size: clamp(15px, 1.5vw, 19px);
+      font-weight: 300;
+      color: var(--text2);
+      max-width: 700px;
+      line-height: 1.6;
+      margin-bottom: 24px
+    }
+
+    .sb {
+      font-size: 15px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 14px;
+      max-width: 1100px
+    }
+
+    .sb strong {
+      color: var(--text)
+    }
+
+    .sb em {
+      color: var(--cyan);
+      font-style: italic
+    }
+
+    .sb code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--green)
+    }
+
+    .eq {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 24px;
+      margin: 14px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      color: var(--cyan);
+      text-align: center;
+      max-width: 1100px;
+      line-height: 1.6
+    }
+
+    .eq-label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-style: italic
+    }
+
+    .card-grid {
+      display: grid;
+      gap: 16px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 12px 0
+    }
+
+    .c2 {
+      grid-template-columns: 1fr 1fr
+    }
+
+    .c3 {
+      grid-template-columns: 1fr 1fr 1fr
+    }
+
+    .card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      transition: all .3s;
+      position: relative;
+      overflow: hidden
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0;
+      transition: opacity .3s
+    }
+
+    .card:hover {
+      background: var(--bg4);
+      transform: translateY(-2px)
+    }
+
+    .card:hover::after {
+      opacity: 1
+    }
+
+    .card-green::after {
+      background: linear-gradient(90deg, transparent, var(--green), transparent)
+    }
+
+    .card-red::after {
+      background: linear-gradient(90deg, transparent, var(--red), transparent)
+    }
+
+    .card-gold::after {
+      background: linear-gradient(90deg, transparent, var(--gold), transparent)
+    }
+
+    .card-active {
+      border-color: var(--cyan);
+      box-shadow: 0 0 30px rgba(0, 212, 255, .1)
+    }
+
+    .card-dim {
+      opacity: .5
+    }
+
+    .ci {
+      font-size: 24px;
+      display: block;
+      margin-bottom: 10px
+    }
+
+    .card h3 {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 8px;
+      line-height: 1.3
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.6
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      width: 100%;
+      max-width: 1100px;
+      align-items: start;
+      margin: 12px 0
+    }
+
+    .col h3 {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 12px
+    }
+
+    .hl-green {
+      color: var(--green)
+    }
+
+    .hl-blue {
+      color: var(--blue)
+    }
+
+    .hl-red {
+      color: var(--red)
+    }
+
+    ul {
+      list-style: none;
+      padding: 0
+    }
+
+    ul li {
+      padding: 6px 0 6px 22px;
+      position: relative;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6
+    }
+
+    ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--blue);
+      font-weight: 600
+    }
+
+    .green-list li::before {
+      color: var(--green)
+    }
+
+    .red-list li::before {
+      color: var(--red)
+    }
+
+    .check-list li::before {
+      content: '✓'
+    }
+
+    .danger-list li::before {
+      content: '⚠';
+      color: var(--red)
+    }
+
+    .dt {
+      width: 100%;
+      max-width: 1100px;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px
+    }
+
+    .dt-full {
+      width: 100%
+    }
+
+    .dt th,
+    .dt td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .dt th {
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: var(--bg3)
+    }
+
+    .dt td {
+      color: var(--text2)
+    }
+
+    .dt tr:hover td {
+      color: var(--text)
+    }
+
+    .note {
+      background: var(--bg3);
+      border-left: 3px solid var(--green);
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px;
+      margin: 14px 0;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+      max-width: 1100px
+    }
+
+    .note strong {
+      color: var(--text);
+      display: block;
+      margin-bottom: 4px
+    }
+
+    .note-red {
+      border-left-color: var(--red)
+    }
+
+    .note-blue {
+      border-left-color: var(--blue)
+    }
+
+    .note-gold {
+      border-left-color: var(--gold)
+    }
+
+    .img-placeholder {
+      background: var(--bg3);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 12px 0;
+      min-height: 180px
+    }
+
+    .img-icon {
+      font-size: 28px;
+      opacity: .4;
+      margin-bottom: 8px
+    }
+
+    .img-prompt {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      max-width: 400px;
+      line-height: 1.5;
+      font-style: italic
+    }
+
+    .hero-slide {
+      align-items: center;
+      text-align: center
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden
+    }
+
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(91, 140, 255, .03) 1px, transparent 1px), linear-gradient(90deg, rgba(91, 140, 255, .03) 1px, transparent 1px);
+      background-size: 60px 60px
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      animation: float 8s ease-in-out infinite
+    }
+
+    .o1 {
+      width: 400px;
+      height: 400px;
+      background: var(--green);
+      top: 10%;
+      left: 15%;
+      opacity: .1
+    }
+
+    .o2 {
+      width: 350px;
+      height: 350px;
+      background: var(--blue);
+      bottom: 15%;
+      right: 20%;
+      opacity: .08;
+      animation-delay: -3s
+    }
+
+    .o3 {
+      width: 250px;
+      height: 250px;
+      background: var(--red);
+      top: 50%;
+      left: 60%;
+      opacity: .06;
+      animation-delay: -5s
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translate(0, 0)
+      }
+
+      33% {
+        transform: translate(20px, -15px)
+      }
+
+      66% {
+        transform: translate(-15px, 10px)
+      }
+    }
+
+    .hero-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(42px, 5.5vw, 80px);
+      line-height: 1.05;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero-sub {
+      font-size: clamp(15px, 1.5vw, 19px);
+      font-weight: 300;
+      color: var(--text2);
+      max-width: 600px;
+      line-height: 1.6;
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 1
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 1
+    }
+
+    .badge {
+      padding: 7px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text2)
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      animation: bounce 2s ease infinite;
+      z-index: 1
+    }
+
+    .scroll-hint span {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace
+    }
+
+    .arrow {
+      width: 14px;
+      height: 14px;
+      border-right: 2px solid var(--muted);
+      border-bottom: 2px solid var(--muted);
+      transform: rotate(45deg)
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0)
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(6px)
+      }
+    }
+
+    .divider-slide {
+      align-items: center;
+      text-align: center
+    }
+
+    .div-num {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(80px, 12vw, 160px);
+      opacity: .04;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none
+    }
+
+    .div-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: clamp(32px, 4vw, 56px);
+      margin-bottom: 14px
+    }
+
+    .timeline {
+      width: 100%;
+      max-width: 1000px;
+      position: relative;
+      padding-left: 36px
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--green), var(--green), var(--red), var(--gold));
+      border-radius: 2px
+    }
+
+    .tl-item {
+      position: relative;
+      padding: 14px 0
+    }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      top: 20px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+      border: 2px solid var(--bg)
+    }
+
+    .tl-green::before {
+      background: var(--green)
+    }
+
+    .tl-red::before {
+      background: var(--red)
+    }
+
+    .tl-gold::before {
+      background: var(--gold)
+    }
+
+    .tl-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      margin-bottom: 4px
+    }
+
+    .tl-title {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 4px
+    }
+
+    .tl-desc {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.5
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 16px 0;
+      max-width: 1100px
+    }
+
+    .sg4 {
+      grid-template-columns: repeat(4, 1fr)
+    }
+
+    .sg3 {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    .stat {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center
+    }
+
+    .stat-num {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--cyan);
+      margin-bottom: 6px
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.4
+    }
+
+    .big-stat {
+      text-align: center;
+      margin: 30px 0;
+      max-width: 1100px
+    }
+
+    .big-num {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(40px, 5vw, 72px);
+      color: var(--cyan);
+      margin-bottom: 10px
+    }
+
+    .big-label {
+      font-size: 18px;
+      color: var(--text2);
+      font-weight: 300
+    }
+
+    .pillar {
+      background: var(--bg3);
+      border-radius: 14px;
+      padding: 28px;
+      border: 1px solid var(--border)
+    }
+
+    .pillar h3 {
+      font-size: 20px;
+      margin-bottom: 10px
+    }
+
+    .pillar p {
+      font-size: 14px;
+      color: var(--text2);
+      margin-bottom: 14px
+    }
+
+    .pillar-green {
+      border-top: 3px solid var(--green)
+    }
+
+    .pillar-green h3 {
+      color: var(--green)
+    }
+
+    .pillar-red {
+      border-top: 3px solid var(--red)
+    }
+
+    .pillar-red h3 {
+      color: var(--red)
+    }
+
+    .pillar-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px
+    }
+
+    .danger-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      border-top: 3px solid var(--red)
+    }
+
+    .danger-card h3 {
+      color: var(--red);
+      margin-bottom: 12px
+    }
+
+    .transition-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      margin: 40px 0;
+      max-width: 1100px
+    }
+
+    .tv-from,
+    .tv-to {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 36px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600
+    }
+
+    .tv-from span,
+    .tv-to span {
+      display: block;
+      font-size: 36px;
+      margin-bottom: 10px
+    }
+
+    .tv-from small,
+    .tv-to small {
+      display: block;
+      font-size: 13px;
+      color: var(--text2);
+      font-weight: 300;
+      margin-top: 6px
+    }
+
+    .tv-arrow {
+      font-size: 28px;
+      color: var(--cyan)
+    }
+
+    .reveal-step {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all .5s ease
+    }
+
+    .reveal-step.visible {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .step-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 8px 0;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px
+    }
+
+    .step-num {
+      background: var(--green);
+      color: var(--bg);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0
+    }
+
+    .widget {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 16px 0;
+      max-width: 1100px
+    }
+
+    .widget-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-top: 12px
+    }
+
+    .widget-controls label {
+      font-size: 13px;
+      color: var(--text2)
+    }
+
+    .widget-controls input[type=range] {
+      width: 200px;
+      accent-color: var(--cyan)
+    }
+
+    .widget-controls input[type=number] {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px
+    }
+
+    .widget-btn {
+      background: var(--green);
+      color: var(--bg);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px
+    }
+
+    .widget-btn:hover {
+      filter: brightness(1.2)
+    }
+
+    .widget-result {
+      font-size: 15px;
+      color: var(--text)
+    }
+
+    .widget-result strong {
+      color: var(--cyan);
+      font-size: 20px
+    }
+
+    .widget-chart {
+      width: 100%;
+      height: 200px;
+      background: var(--bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      position: relative
+    }
+
+    #navDots {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 100
+    }
+
+    .nd {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--muted);
+      opacity: .25;
+      cursor: pointer;
+      transition: all .3s;
+      border: none;
+      padding: 0
+    }
+
+    .nd:hover {
+      opacity: .6;
+      transform: scale(1.4)
+    }
+
+    .nd.active {
+      opacity: 1;
+      transform: scale(1.5)
+    }
+
+    .nd.a-green {
+      background: var(--green)
+    }
+
+    .nd.a-red {
+      background: var(--red)
+    }
+
+    .nd.a-gold {
+      background: var(--gold)
+    }
+
+    .nd.a-intro {
+      background: var(--cyan)
+    }
+
+    @media(max-width:900px) {
+      .slide {
+        padding: 32px 20px
+      }
+
+      .two-col,
+      .c3 {
+        grid-template-columns: 1fr
+      }
+
+      .c2 {
+        grid-template-columns: 1fr
+      }
+
+      #navDots {
+        display: none
+      }
+
+      .stat-grid,
+      .sg4,
+      .sg3 {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .transition-visual {
+        flex-direction: column;
+        gap: 16px
+      }
+    }
+
+    /* Accessibility: visible focus + less motion if user prefers */
+    :focus {
+      outline: none
+    }
+
+    :focus-visible {
+      outline: 2px solid rgba(0, 212, 255, .85);
+      outline-offset: 3px
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto
+      }
+
+      * {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important
+      }
+    }
+
+    @media print {
+      .slide {
+        page-break-after: always;
+        background: #fff;
+        color: #000;
+        min-height: auto;
+        padding: 40px
+      }
+
+      .slide::before,
+      #navDots,
+      #slideCounter,
+      .scroll-hint,
+      .hero-bg,
+      .sf,
+      .sn {
+        display: none
+      }
+
+      .card,
+      .note,
+      .eq,
+      .dt,
+      .pillar,
+      .step-card,
+      .widget,
+      .stat {
+        border-color: #ccc
+      }
+
+      .sb,
+      .card p,
+      .note,
+      ul li,
+      .dt td,
+      .tl-desc {
+        color: #333
+      }
+
+      .st,
+      .card h3,
+      .tl-title {
+        color: #000
+      }
+    }
+
+    .merged-slide-container {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+
+    .merged-col {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+    }
+
+    .merged-col .st {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .merged-col .two-col {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 8px 0;
+    }
+
+    .merged-col .card-grid.c3 {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .slide {
+      padding: 40px 50px;
+    }
+
+    .brand-tr {
+      position: absolute;
+      top: 22px;
+      right: 40px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--cyan);
+      letter-spacing: 2px;
+      opacity: .65;
+      z-index: 5;
+      text-transform: uppercase
+    }
+
+    .brand-tr::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--cyan);
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+      box-shadow: 0 0 8px var(--cyan)
+    }
+
+    .slide {
+      animation: slideIn .6s ease both
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .card {
+      transition: all .3s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .3)
+    }
+
+    .eq {
+      transition: all .3s;
+      cursor: default
+    }
+
+    .eq:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(0, 212, 255, .15);
+      transform: scale(1.02)
+    }
+
+    .note {
+      transition: all .3s
+    }
+
+    .note:hover {
+      transform: translateX(4px)
+    }
+
+    .stat:hover .stat-num {
+      transform: scale(1.1);
+      transition: transform .3s
+    }
+
+    .stat-num {
+      transition: transform .3s
+    }
+
+    .sn {
+      display: none
+    }
+
+    #progressBar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--green), var(--red), var(--gold));
+      z-index: 200;
+      transition: width .3s ease;
+      box-shadow: 0 0 8px rgba(0, 212, 255, .4)
+    }
+
+    #kbHelp {
+      position: fixed;
+      bottom: 40px;
+      right: 24px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 28px;
+      z-index: 300;
+      display: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 2;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .5)
+    }
+
+    #kbHelp.show {
+      display: block;
+      animation: slideIn .3s ease both
+    }
+
+    #kbHelp kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--cyan);
+      margin-right: 6px;
+      font-size: 11px
+    }
+
+    #kbHelp .kh-title {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 1px
+    }
+
+    #slideCounter {
+      position: fixed;
+      top: 20px;
+      left: 36px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      z-index: 100;
+      transition: color .3s
+    }
+
+    #slideSection {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 2px;
+      opacity: .6
+    }
+
+    /* ── TOC Slide ── */
+    .toc-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1000px; margin:32px auto 0; }
+    .toc-card { background:var(--bg3); border:1px solid var(--border); border-radius:16px; padding:28px 24px; cursor:pointer; transition:all .4s cubic-bezier(.4,0,.2,1); position:relative; overflow:hidden; text-decoration:none; color:var(--text); display:block; }
+    .toc-card::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .4s; border-radius:16px; }
+    .toc-card:hover { transform:translateY(-6px) scale(1.03); box-shadow:0 12px 40px rgba(0,0,0,.4); }
+    .toc-card:hover::before { opacity:1; }
+    .toc-card.toc-green::before { background:radial-gradient(circle at 50% 0%,rgba(0,229,160,.12),transparent 70%); }
+    .toc-card.toc-green { border-top:3px solid var(--green); }
+    .toc-card.toc-red::before { background:radial-gradient(circle at 50% 0%,rgba(255,107,107,.12),transparent 70%); }
+    .toc-card.toc-red { border-top:3px solid var(--red); }
+    .toc-card.toc-gold::before { background:radial-gradient(circle at 50% 0%,rgba(240,192,64,.12),transparent 70%); }
+    .toc-card.toc-gold { border-top:3px solid var(--gold); }
+    .toc-icon { font-size:32px; display:block; margin-bottom:12px; }
+    .toc-chapter { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+    .toc-title { font-family:'Playfair Display',serif; font-weight:700; font-size:18px; margin-bottom:8px; }
+    .toc-desc { font-size:12px; color:var(--text2); line-height:1.5; }
+    @media(max-width:900px){ .toc-grid{grid-template-columns:1fr 1fr;} }
+
+    /* ── Quiz Slides ── */
+    .quiz-q { font-family:'Playfair Display',serif; font-weight:700; font-size:18px; margin:16px 0 12px; color:var(--text); }
+    .quiz-options { display:flex; flex-direction:column; gap:10px; max-width:600px; }
+    .quiz-opt { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:14px 20px; cursor:pointer; font-size:14px; color:var(--text2); transition:all .3s; display:flex; align-items:center; gap:12px; user-select:none; }
+    .quiz-opt:hover { border-color:var(--cyan); background:var(--bg4); color:var(--text); }
+    .quiz-opt .q-letter { width:28px; height:28px; border-radius:50%; background:var(--bg4); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:600; color:var(--muted); flex-shrink:0; transition:all .3s; }
+    .quiz-opt.correct { border-color:var(--green); background:rgba(0,229,160,.08); color:var(--text); }
+    .quiz-opt.correct .q-letter { background:var(--green); color:var(--bg); border-color:var(--green); }
+    .quiz-opt.wrong { border-color:var(--red); background:rgba(255,107,107,.06); opacity:.6; }
+    .quiz-opt.wrong .q-letter { border-color:var(--red); color:var(--red); }
+    .quiz-opt.answered { pointer-events:none; }
+    .quiz-explain { display:none; margin-top:10px; padding:12px 16px; background:var(--bg3); border-left:3px solid var(--green); border-radius:0 8px 8px 0; font-size:13px; color:var(--text2); line-height:1.6; }
+    .quiz-explain.show { display:block; animation:slideIn .3s ease both; }
+
+    /* ── SVG Animations ── */
+    @keyframes ionShuttle { 0%{transform:translateX(0)} 50%{transform:translateX(60px)} 100%{transform:translateX(0)} }
+    @keyframes ionShuttleRev { 0%{transform:translateX(0)} 50%{transform:translateX(-60px)} 100%{transform:translateX(0)} }
+    .ion-anim { animation: ionShuttle 3s ease-in-out infinite; }
+    .ion-anim-rev { animation: ionShuttleRev 3s ease-in-out infinite; }
+    @keyframes drawLine { from{stroke-dashoffset:500} to{stroke-dashoffset:0} }
+    .svg-draw { stroke-dasharray:500; stroke-dashoffset:500; animation: drawLine 2s ease forwards; }
+    .svg-draw-delay { stroke-dasharray:500; stroke-dashoffset:500; animation: drawLine 2s ease 0.8s forwards; }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .svg-fade { opacity:0; animation: fadeInUp .5s ease 2s forwards; }
+    .svg-fade-d2 { opacity:0; animation: fadeInUp .5s ease 2.5s forwards; }
+    .svg-fade-d3 { opacity:0; animation: fadeInUp .5s ease 3s forwards; }
+  </style>
+</head>
+
+<body>
+  <nav id="navDots"></nav>
+  <div id="slideCounter">01 / 88</div>
+  <!-- ═══ SLIDE 01 — HERO ═══ -->
+  <section class="slide hero-slide" data-num="1" data-section="intro" id="s1">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <div class="hero-bg">
+      <div class="grid-lines"></div>
+      <div class="orb o1"></div>
+      <div class="orb o2"></div>
+      <div class="orb o3"></div>
+    </div>
+    <div class="hero-meta">WORKSHOP DAY 4 · SMART MOBILITY WITH AI &amp; COMPUTER VISION</div>
+    <h1 class="hero-title">Intelligent <span class="hl-green">EV</span> Energy<br />Systems</h1>
+    <p class="hero-sub">A deep dive into SOC estimation &amp; regenerative energy — from first-principles derivation to
+      MATLAB/Simulink implementation.</p>
+    <div class="badge-row">
+      <span class="badge">🔋 SOC Estimation</span>
+      <span class="badge">♻️ Regenerative Systems</span>
+      <span class="badge">📐 Formula Derivations</span>
+      <span class="badge">⚙️ Simulink Models</span>
+    </div>
+    <div class="scroll-hint"><span>SCROLL</span>
+      <div class="arrow"></div>
+    </div>
+    <div class="sf">Presented by Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+  </section>
+
+  <!-- TOC SLIDE -->
+  <section class="slide" data-num="toc" data-section="intro" id="sTOC">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <span class="tag tag-intro">ROADMAP</span>
+    <h2 class="st">Today's Journey</h2>
+    <p class="ss">Click any section to jump directly. Use arrow keys to navigate sequentially.</p>
+    <div class="toc-grid">
+      <a href="#s15" class="toc-card toc-green" onclick="event.preventDefault();document.getElementById('s15').scrollIntoView({behavior:'smooth'})">
+        <span class="toc-icon">🔋</span>
+        <div class="toc-chapter">Chapters 1-2</div>
+        <div class="toc-title">SOC Fundamentals</div>
+        <div class="toc-desc">Cell chemistry, capacity, internal resistance, and why SOC matters.</div>
+      </a>
+      <a href="#s25" class="toc-card toc-green" onclick="event.preventDefault();document.getElementById('s25').scrollIntoView({behavior:'smooth'})">
+        <span class="toc-icon">📈</span>
+        <div class="toc-chapter">Chapter 3</div>
+        <div class="toc-title">OCV Method</div>
+        <div class="toc-desc">Low-rate discharge, GITT, polynomial fits, hysteresis correction.</div>
+      </a>
+      <a href="#s63" class="toc-card toc-green" onclick="event.preventDefault();document.getElementById('s63').scrollIntoView({behavior:'smooth'})">
+        <span class="toc-icon">🎯</span>
+        <div class="toc-chapter">Chapter 4</div>
+        <div class="toc-title">Extended Kalman Filter</div>
+        <div class="toc-desc">State-space modeling, EKF derivation, Simulink implementation.</div>
+      </a>
+      <a href="#s95" class="toc-card toc-red" onclick="event.preventDefault();document.getElementById('s95').scrollIntoView({behavior:'smooth'})">
+        <span class="toc-icon">🚗</span>
+        <div class="toc-chapter">Chapter 5</div>
+        <div class="toc-title">Regen Braking</div>
+        <div class="toc-desc">Free body diagrams, braking strategies, energy recovery limits.</div>
+      </a>
+      <a href="#s131" class="toc-card toc-red" onclick="event.preventDefault();document.getElementById('s131').scrollIntoView({behavior:'smooth'})">
+        <span class="toc-icon">⚡</span>
+        <div class="toc-chapter">Chapter 6</div>
+        <div class="toc-title">Regen Damper</div>
+        <div class="toc-desc">Quarter-car model, electromagnetic harvesting, impedance matching.</div>
+      </a>
+      <a href="#s149" class="toc-card toc-gold" onclick="event.preventDefault();document.getElementById('s149').scrollIntoView({behavior:'smooth'})">
+        <span class="toc-icon">🔧</span>
+        <div class="toc-chapter">Hands-On</div>
+        <div class="toc-title">Lab &amp; Closing</div>
+        <div class="toc-desc">Build Simulink models, compare strategies, Q&amp;A session.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 01 ═══ -->
+  <section class="slide" data-num="1" data-section="intro" id="s1">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">02</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-intro">ABOUT THE PRESENTER</span>
+        <h2 class="st">Your Guide Today</h2>
+        <div class="two-col">
+          <div class="col">
+            <h3 class="hl-blue">Omkar</h3>
+            <p class="sb">Final-year B.Tech, ECE — MIT World Peace University, Pune.</p>
+            <ul class="">
+              <li>Founder of PowerNetPro — renewable energy startup</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-intro">CONTEXT</span>
+        <h2 class="st">Where Does This Session Fit?</h2>
+        <p class="ss">Days 1–3 covered AI, Computer Vision, and ADAS. Today we go <em>inside</em> the vehicle — to the
+          energy systems that power smart mobility.</p>
+        <div class="card-grid c3">
+          <div class="card card-dim"><span class="ci">🧠</span>
+            <h3>Days 1–3</h3>
+            <p>AI &amp; Computer Vision, ADAS algorithms, sensor fusion, object detection</p>
+          </div>
+          <div class="card card-active"><span class="ci">⚡</span>
+            <h3>Day 4 (Today)</h3>
+            <p>Battery intelligence, powertrain energy flow, regenerative systems — with hands-on Simulink</p>
+          </div>
+          <div class="card card-dim"><span class="ci">🚀</span>
+            <h3>Day 5</h3>
+            <p>Integration, project showcase, future of smart mobility</p>
+          </div>
+        </div>
+        <div class="note note-green"><strong>Key Insight</strong> Smart Mobility is not just cameras and LiDAR. The
+          <strong>energy system</strong> determines how far, how efficiently, and how safely an EV operates.</div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 02 ═══ -->
+
+  <!-- ═══ SLIDE 03 ═══ -->
+  <section class="slide" data-num="3" data-section="intro" id="s3">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">03</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-intro">MOTIVATION</span>
+        <h2 class="st">Why Energy Intelligence Matters</h2>
+        <div class="two-col">
+          <div class="col">
+            <p class="sb">An EV is only as smart as its Battery Management System. Without accurate SOC estimation and
+              efficient energy recovery, even the most advanced ADAS system runs out of power.</p>
+            <div class="stat-grid">
+              <div class="stat"><span class="stat-num">±2%</span><span class="stat-label">SOC accuracy target in
+                  production BMS</span></div>
+              <div class="stat"><span class="stat-num">15–30%</span><span class="stat-label">Energy recoverable via
+                  regen braking</span></div>
+              <div class="stat"><span class="stat-num">100–400W</span><span class="stat-label">Harvestable power from
+                  Indian road vibrations</span></div>
+            </div>
+          </div>
+          <div class="col">
+            <div
+              style="width:100%; min-height:180px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; position:relative; overflow:hidden; padding:16px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+              <svg viewBox="0 0 420 200" style="width:100%;height:auto">
+                <rect x="30" y="20" width="80" height="160" rx="4" fill="none" stroke="#5b8cff" stroke-width="2" />
+                <text x="70" y="15" fill="#5b8cff" font-size="10" text-anchor="middle" font-family="monospace">Anode
+                  (−)</text>
+                <text x="70" y="105" fill="#9896a8" font-size="9" text-anchor="middle"
+                  font-family="monospace">Graphite</text>
+                <rect x="130" y="20" width="40" height="160" rx="2" fill="none" stroke="#f0c040" stroke-width="1.5"
+                  stroke-dasharray="4" />
+                <text x="150" y="15" fill="#f0c040" font-size="9" text-anchor="middle"
+                  font-family="monospace">Separator</text>
+                <rect x="190" y="20" width="80" height="160" rx="4" fill="none" stroke="#ff6b6b" stroke-width="2" />
+                <text x="230" y="15" fill="#ff6b6b" font-size="10" text-anchor="middle" font-family="monospace">Cathode
+                  (+)</text>
+                <text x="230" y="105" fill="#9896a8" font-size="9" text-anchor="middle"
+                  font-family="monospace">NMC</text>
+                <path d="M110 60 L170 60" stroke="#00e5a0" stroke-width="2" marker-end="url(#ah)" class="ion-anim" /><text x="140" y="55"
+                  fill="#00e5a0" font-size="8" text-anchor="middle">Li⁺</text>
+                <path d="M170 100 L110 100" stroke="#00d4ff" stroke-width="2" marker-end="url(#ah2)" class="ion-anim-rev" /><text x="140"
+                  y="95" fill="#00d4ff" font-size="8" text-anchor="middle">Li⁺</text>
+                <text x="140" y="140" fill="#9896a8" font-size="9" text-anchor="middle">Electrolyte</text>
+                <text x="330" y="60" fill="#00e5a0" font-size="10" font-family="monospace">→ Charge</text>
+                <text x="330" y="100" fill="#00d4ff" font-size="10" font-family="monospace">← Discharge</text>
+              </svg></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 14 ═══ -->
+
+  <!-- ═══ SLIDE 15 ═══ -->
+  <section class="slide" data-num="15" data-section="soc-intro" id="s15">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">10</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">CHEMISTRIES</span>
+        <h2 class="st">Li-Ion Cell Chemistry Comparison</h2>
+        <table class="dt dt-full">
+          <tr>
+            <th>Chemistry</th>
+            <th>Voltage</th>
+            <th>Energy</th>
+            <th>Cycle Life</th>
+            <th>Safety</th>
+            <th>Use Case</th>
+          </tr>
+          <tr>
+            <td><strong>NMC</strong> (LiNiMnCoO₂)</td>
+            <td>3.6–3.7V</td>
+            <td>150–220 Wh/kg</td>
+            <td>1000–2000</td>
+            <td>Moderate</td>
+            <td>Tesla 3, Tata Nexon</td>
+          </tr>
+          <tr>
+            <td><strong>LFP</strong> (LiFePO₄)</td>
+            <td>3.2–3.3V</td>
+            <td>90–160 Wh/kg</td>
+            <td>2000–5000+</td>
+            <td>Excellent</td>
+            <td>Buses, Ola S1 Pro</td>
+          </tr>
+          <tr>
+            <td><strong>NCA</strong> (LiNiCoAlO₂)</td>
+            <td>3.6V</td>
+            <td>200–260 Wh/kg</td>
+            <td>500–1000</td>
+            <td>Lower</td>
+            <td>Tesla S/X</td>
+          </tr>
+          <tr>
+            <td><strong>LTO</strong> (Li₄Ti₅O₁₂)</td>
+            <td>2.3–2.4V</td>
+            <td>50–80 Wh/kg</td>
+            <td>5000–15000</td>
+            <td>Excellent</td>
+            <td>Fast-charge buses</td>
+          </tr>
+        </table>
+        <div class="note note-green"><strong>Indian Context</strong> LFP is gaining massive traction in India due to
+          lower cost, better safety, and long cycle life — critical for commercial EVs and e-rickshaws.</div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">PARAMETERS</span>
+        <h2 class="st">Key Parameter: Capacity (Q)</h2>
+        <p class="sb">The total charge a cell can deliver from full to empty, measured in Ampere-hours (Ah).</p>
+        <div class="eq">Q = ∫<sub>0</sub><sup>t</sup> I(t) dt     [Ah]</div>
+        <p class="sb">A cell rated <strong>3 Ah</strong> can deliver 3A for 1 hour, or 1.5A for 2 hours, or 6A for 30
+          minutes (approximately — real capacity depends on C-rate and temperature).</p>
+        <div
+          style="width:100%; min-height:180px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; position:relative; overflow:hidden; padding:16px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <svg viewBox="0 0 420 220" style="width:100%;height:auto">
+            <text x="210" y="15" fill="#9896a8" font-size="11" text-anchor="middle" font-family="monospace">OCV vs SOC —
+              NMC Cell</text>
+            <path d="M60 30 L60 190 L380 190" fill="none" stroke="#9896a8" stroke-width="2" />
+            <text x="30" y="115" fill="#9896a8" font-size="9" text-anchor="middle" font-family="monospace"
+              transform="rotate(-90,30,115)">OCV (V)</text>
+            <text x="220" y="210" fill="#9896a8" font-size="9" text-anchor="middle" font-family="monospace">SOC
+              (%)</text>
+            <text x="55" y="180" fill="#9896a8" font-size="8" text-anchor="end">3.0</text><text x="55" y="140"
+              fill="#9896a8" font-size="8" text-anchor="end">3.3</text><text x="55" y="100" fill="#9896a8" font-size="8"
+              text-anchor="end">3.6</text><text x="55" y="60" fill="#9896a8" font-size="8"
+              text-anchor="end">3.9</text><text x="55" y="35" fill="#9896a8" font-size="8" text-anchor="end">4.2</text>
+            <text x="80" y="200" fill="#9896a8" font-size="8" text-anchor="middle">0</text><text x="160" y="200"
+              fill="#9896a8" font-size="8" text-anchor="middle">25</text><text x="240" y="200" fill="#9896a8"
+              font-size="8" text-anchor="middle">50</text><text x="320" y="200" fill="#9896a8" font-size="8"
+              text-anchor="middle">75</text><text x="370" y="200" fill="#9896a8" font-size="8"
+              text-anchor="middle">100</text>
+            <path d="M80 175 C100 170 120 155 150 140 C180 128 220 120 260 110 C300 90 340 55 370 35" fill="none"
+              stroke="#00e5a0" stroke-width="3" />
+            <text x="100" y="160" fill="#ff6b6b" font-size="8" font-style="italic">Steep</text>
+            <text x="220" y="105" fill="#f0c040" font-size="8" font-style="italic">Flat region</text>
+            <text x="350" y="45" fill="#ff6b6b" font-size="8" font-style="italic">Steep</text>
+          </svg></div>
+        <div class="note note-green"><strong>Why This Matters</strong> The shape of this curve determines how well the
+          OCV method works. NMC has a nice slope throughout. LFP is nearly <em>flat</em> from 20–80% — making OCV almost
+          useless in that range.</div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 18 ═══ -->
+
+  <!-- ═══ SLIDE 19 ═══ -->
+  <section class="slide" data-num="19" data-section="soc-intro" id="s19">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">12</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">PARAMETERS</span>
+        <h2 class="st">Key Parameter: Internal Resistance (R₀)</h2>
+        <p class="sb">Caused by electrolyte ionic resistance, contact resistance, and current collectors. Creates an
+          <strong>instantaneous</strong> voltage drop when current flows.</p>
+        <div class="eq">V<sub>drop</sub> = I × R₀</div>
+        <div class="two-col">
+          <div class="col">
+            <p class="sb">For a cell with R₀ = 20 mΩ at 10A discharge:</p>
+            <div class="eq">V<sub>drop</sub> = 10 × 0.02 = 0.2V</div>
+            <p class="sb">This 200mV drop means the terminal voltage is lower than OCV during discharge, and higher than
+              OCV during charge. The BMS must account for this.</p>
+          </div>
+          <div class="col">
+            <div
+              style="width:100%; min-height:180px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; position:relative; overflow:hidden; padding:16px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+              <svg viewBox="0 0 420 220" style="width:100%;height:auto">
+                <text x="210" y="15" fill="#9896a8" font-size="11" text-anchor="middle" font-family="monospace">OCV-SOC
+                  Curves by Chemistry</text>
+                <path d="M60 30 L60 190 L380 190" fill="none" stroke="#9896a8" stroke-width="2" />
+                <path d="M80 170 C120 160 200 110 280 80 C340 55 370 40 375 35" fill="none" stroke="#00e5a0"
+                  stroke-width="2.5" /><text x="378" y="35" fill="#00e5a0" font-size="8">NMC</text>
+                <path d="M80 155 C100 150 140 148 200 145 C260 142 300 140 340 120 C360 100 375 80 375 75" fill="none"
+                  stroke="#ff6b6b" stroke-width="2.5" /><text x="378" y="75" fill="#ff6b6b" font-size="8">LFP</text>
+                <path d="M80 165 C100 150 160 100 240 60 C300 38 360 30 375 28" fill="none" stroke="#5b8cff"
+                  stroke-width="2.5" /><text x="378" y="28" fill="#5b8cff" font-size="8">NCA</text>
+                <path d="M80 160 C140 155 200 152 260 148 C320 140 360 130 375 125" fill="none" stroke="#f0c040"
+                  stroke-width="2.5" /><text x="378" y="125" fill="#f0c040" font-size="8">LTO</text>
+                <rect x="80" y="140" width="250" height="15" rx="3" fill="rgba(255,107,107,0.08)" stroke="none" /><text
+                  x="205" y="150" fill="#ff6b6b" font-size="7" text-anchor="middle" opacity="0.6">LFP: Flat plateau →
+                  OCV unreliable</text>
+              </svg></div>
+          </div>
+          <div class="col">
+            <h3>Chemistry Shapes</h3>
+            <ul class="green-list">
+              <li><strong>NMC:</strong> Nice S-curve, good slope everywhere → OCV works well</li>
+              <li><strong>LFP:</strong> Very flat 20–80% → OCV nearly useless in mid-range</li>
+              <li><strong>NCA:</strong> Steep curve → highly sensitive to voltage noise</li>
+              <li><strong>LTO:</strong> Low voltage (2.3V), moderate slope</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 24 ═══ -->
+
+  <!-- ═══ SLIDE 25 ═══ -->
+  <section class="slide" data-num="25" data-section="soc-ocv" id="s25">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">16</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">OCV METHOD</span>
+        <h2 class="st">Experimental Method 1: Low-Rate Discharge</h2>
+        <p class="sb">Discharge at very low C-rate (C/20 or C/25) to minimize polarization effects.</p>
+        <div class="reveal-slide" data-has-reveals="true">
+          <div class="reveal-step" data-step="1">
+            <div class="step-card"><span class="step-num">1</span>Fully charge the cell to 100% SOC using CC-CV protocol
+              to the manufacturer's upper cutoff voltage.</div>
+          </div>
+          <div class="reveal-step" data-step="2">
+            <div class="step-card"><span class="step-num">2</span>Discharge at C/25 rate (e.g., 0.12A for a 3Ah cell).
+              This very slow discharge minimizes internal resistance effects.</div>
+          </div>
+          <div class="reveal-step" data-step="3">
+            <div class="step-card"><span class="step-num">3</span>Record voltage vs. accumulated Ah at regular intervals
+              (every 1% SOC or every minute).</div>
+          </div>
+          <div class="reveal-step" data-step="4">
+            <div class="step-card"><span class="step-num">4</span>Repeat for charging direction. Average the discharge
+              and charge curves to get the equilibrium OCV.</div>
+          </div>
+          <div class="reveal-step" data-step="5">
+            <div class="note note-green"><strong>Why C/25?</strong> At C/25, the voltage drop I×R₀ = 0.12A × 0.02Ω =
+              2.4mV, which is negligible compared to OCV changes (~1.2V total range). So terminal voltage ≈ OCV.</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">OCV METHOD</span>
+        <h2 class="st">Experimental Method 2: GITT (Pulse Discharge)</h2>
+        <p class="sb">Galvanostatic Intermittent Titration Technique — pulse then rest, pulse then rest.</p>
+        <div
+          style="width:100%; min-height:180px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; position:relative; overflow:hidden; padding:16px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <svg viewBox="0 0 420 180" style="width:100%;height:auto">
+            <text x="210" y="15" fill="#9896a8" font-size="10" text-anchor="middle" font-family="monospace">GITT: Pulse
+              + Rest → OCV Extraction</text>
+            <path d="M50 25 L50 165 L400 165" fill="none" stroke="#9896a8" stroke-width="1.5" />
+            <path
+              d="M70 100 L70 60 L110 60 L110 75 C120 85 140 88 150 90 L150 90 L150 55 L190 55 L190 68 C200 78 220 82 230 85 L230 85 L230 48 L270 48 L270 62 C280 72 300 77 310 80"
+              fill="none" stroke="#00e5a0" stroke-width="2" class="svg-draw" />
+            <path
+              d="M70 150 L70 120 L110 120 L110 150 L150 150 L150 120 L190 120 L190 150 L230 150 L230 120 L270 120 L270 150 L310 150"
+              fill="none" stroke="#5b8cff" stroke-width="1.5" opacity="0.6" />
+            <text x="350" y="85" fill="#00e5a0" font-size="9" font-family="monospace">Voltage</text>
+            <text x="350" y="150" fill="#5b8cff" font-size="9" font-family="monospace">Current</text>
+            <text x="130" y="95" fill="#f0c040" font-size="7" class="svg-fade">OCV</text><text x="210" y="90" fill="#f0c040"
+              font-size="7" class="svg-fade-d2">OCV</text><text x="290" y="85" fill="#f0c040" font-size="7" class="svg-fade-d3">OCV</text>
+          </svg></div>
+        <div class="reveal-slide" data-has-reveals="true">
+          <div class="reveal-step" data-step="1">
+            <div class="step-card"><span class="step-num">1</span>Fully charge. Apply 1C current pulse for 6 minutes (=
+              10% SOC step).</div>
+          </div>
+          <div class="reveal-step" data-step="2">
+            <div class="step-card"><span class="step-num">2</span>Rest for 1–2 hours until voltage stabilizes. Record
+              this stable voltage as OCV at that SOC.</div>
+          </div>
+          <div class="reveal-step" data-step="3">
+            <div class="step-card"><span class="step-num">3</span>Repeat for each 10% step from 100% to 0%. Total: ~20+
+              hours of testing.</div>
+          </div>
+          <div class="reveal-step" data-step="4">
+            <div class="note note-green"><strong>Bonus</strong> The GITT data also lets you extract R₀, R₁, C₁
+              parameters for the equivalent circuit model — needed for the Kalman filter later!</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 26 ═══ -->
+
+  <!-- ═══ SLIDE 27 ═══ -->
+  <section class="slide" data-num="27" data-section="soc-ocv" id="s27">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">17</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">OCV METHOD</span>
+        <h2 class="st">Mathematical Representation: Polynomial Fit</h2>
+        <p class="sb">The OCV-SOC relationship is typically fit with a 6th–8th order polynomial:</p>
+        <div class="eq">OCV(SOC) = a₀ + a₁·SOC + a₂·SOC² + a₃·SOC³ + ... + aₙ·SOCⁿ</div>
+        <p class="sb">Where SOC is normalized (0 to 1), and coefficients a₀ through aₙ are determined by
+          <strong>least-squares fitting</strong> to experimental data.</p>
+        <div class="note note-green"><strong>MATLAB Command</strong> Use <code>p = polyfit(SOC_data, OCV_data, 7)</code>
+          to get a 7th-order polynomial fit. Then <code>OCV_fit = polyval(p, SOC_vector)</code> to evaluate.</div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">OCV METHOD</span>
+        <h2 class="st">Mathematical Representation: Nernst-Based Model</h2>
+        <p class="sb">A physically motivated model combining logarithmic terms (from the Nernst equation) with
+          polynomial correction:</p>
+        <div class="eq">OCV(SOC) = K₀ + K₁/SOC + K₂·SOC + K₃·ln(SOC) + K₄·ln(1−SOC)</div>
+        <div class="two-col">
+          <div class="col">
+            <h3>Why Logarithmic Terms?</h3>
+            <p class="sb">The Nernst equation from electrochemistry predicts logarithmic voltage behavior at extreme SOC
+              values. The ln(SOC) term captures the steep drop near 0%, and ln(1−SOC) captures the steep rise near 100%.
+            </p>
+          </div>
+          <div class="col">
+            <h3>Advantage Over Polynomial</h3>
+            <p class="sb">Polynomials struggle with steep endpoints (Runge's phenomenon). The Nernst-based model
+              naturally handles this with fewer parameters and better extrapolation behavior.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 28 ═══ -->
+
+  <!-- ═══ SLIDE 29 ═══ -->
+  <section class="slide" data-num="29" data-section="soc-ocv" id="s29">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">18</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">OCV METHOD</span>
+        <h2 class="st">Temperature Dependence of OCV</h2>
+        <p class="sb">OCV shifts with temperature. For NMC: +0.1 to +0.5 mV/°C. This can cause 2–5% SOC error if
+          ignored.</p>
+        <div class="eq">OCV(SOC, T) = OCV<sub>ref</sub>(SOC) + α · (T − T<sub>ref</sub>)</div>
+        <div class="two-col">
+          <div class="col">
+            <h3>Option A: Multiple Curves</h3>
+            <p class="sb">Store separate OCV-SOC tables at -10°C, 0°C, 25°C, 45°C. Interpolate between them based on
+              measured temperature.</p>
+          </div>
+          <div class="col">
+            <h3>Option B: Temperature Offset</h3>
+            <p class="sb">Store one reference curve (at 25°C) and apply a linear temperature correction factor α.</p>
+            <div class="note note-green"><strong>Typical α</strong> For NMC: α ≈ 0.3 mV/°C. For LFP: α ≈ 0.1 mV/°C
+              (smaller because LFP voltage is inherently more stable).</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">OCV METHOD</span>
+        <h2 class="st">Hysteresis Effect (Especially LFP)</h2>
+        <p class="sb">For some chemistries, OCV during charging is slightly <strong>higher</strong> than during
+          discharging at the same SOC.</p>
+        <div class="eq">OCV<sub>actual</sub>(SOC) = OCV<sub>avg</sub>(SOC) ± h(SOC)/2</div>
+        <div
+          style="width:100%; min-height:180px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; position:relative; overflow:hidden; padding:16px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <svg viewBox="0 0 420 200" style="width:100%;height:auto">
+            <text x="210" y="15" fill="#9896a8" font-size="11" text-anchor="middle" font-family="monospace">LFP
+              Hysteresis: Charge vs Discharge OCV</text>
+            <path d="M60 30 L60 180 L380 180" fill="none" stroke="#9896a8" stroke-width="2" />
+            <text x="30" y="110" fill="#9896a8" font-size="9" text-anchor="middle" font-family="monospace"
+              transform="rotate(-90,30,110)">OCV (V)</text>
+            <text x="220" y="198" fill="#9896a8" font-size="9" text-anchor="middle" font-family="monospace">SOC
+              (%)</text>
+            <path d="M80 155 C140 150 200 145 280 143 C340 140 370 110 375 90" fill="none" stroke="#00e5a0"
+              stroke-width="2.5" /><text x="378" y="90" fill="#00e5a0" font-size="8">Charge</text>
+            <path d="M80 165 C140 160 200 155 280 153 C340 150 370 120 375 100" fill="none" stroke="#00d4ff"
+              stroke-width="2.5" /><text x="378" y="100" fill="#00d4ff" font-size="8">Discharge</text>
+            <path d="M200 145 L200 155" stroke="#ff6b6b" stroke-width="2" /><text x="210" y="142" fill="#ff6b6b"
+              font-size="9" font-family="monospace">h(SOC)</text>
+            <path d="M200 145 L205 148" stroke="#ff6b6b" stroke-width="1.5" />
+            <path d="M200 155 L205 152" stroke="#ff6b6b" stroke-width="1.5" />
+            <rect x="120" y="140" width="180" height="20" rx="3" fill="rgba(255,107,107,0.06)" stroke="none" />
+            <text x="210" y="170" fill="#9896a8" font-size="8" text-anchor="middle" font-style="italic">Flat LFP plateau
+              makes hysteresis more impactful</text>
+          </svg></div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 62 ═══ -->
+
+  <!-- ═══ SLIDE 63 ═══ -->
+  <section class="slide" data-num="63" data-section="soc-ekf" id="s63">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">37</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">ECM Voltage Equation</h2>
+        <div class="eq">V<sub>terminal</sub> = OCV(SOC) − I × R₀ − V<sub>RC</sub></div>
+        <p class="sb">Terminal voltage equals OCV minus the two voltage drops: instantaneous (R₀) and dynamic (V_RC from
+          the RC pair).</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">ECM: V_RC Dynamics (RC Pair)</h2>
+        <div class="eq">dV<sub>RC</sub>/dt = −V<sub>RC</sub> / (R₁×C₁) + I / C₁</div>
+        <p class="sb">This is a first-order ODE. V_RC charges up when current flows and decays with time constant τ₁ =
+          R₁×C₁ when current stops. This models the slow voltage relaxation you see after removing load.</p>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 64 ═══ -->
+
+  <!-- ═══ SLIDE 65 ═══ -->
+  <section class="slide" data-num="65" data-section="soc-ekf" id="s65">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">38</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">Parameter Identification from Pulse Test</h2>
+        <p class="sb">From GITT/pulse test data, at each SOC level:</p>
+        <div class="reveal-slide" data-has-reveals="true">
+          <div class="reveal-step" data-step="1">
+            <div class="step-card"><span class="step-num">1</span>R₀ = Instant voltage drop / Current (first
+              microseconds after pulse)</div>
+          </div>
+          <div class="reveal-step" data-step="2">
+            <div class="step-card"><span class="step-num">2</span>Fit recovery curve: V(t) = V_final +
+              A·e<sup>−t/τ₁</sup></div>
+          </div>
+          <div class="reveal-step" data-step="3">
+            <div class="step-card"><span class="step-num">3</span>R₁ = A / I_pulse,   C₁ = τ₁ / R₁</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">State Variables Definition</h2>
+        <p class="sb">The EKF needs a state vector — the quantities we're estimating:</p>
+        <div class="eq">x = [SOC, V<sub>RC</sub>]<sup>T</sup>    (2×1 state vector)</div>
+        <p class="sb">SOC is what we want. V_RC is a "hidden" state — we can't measure it directly, but we need it to
+          predict terminal voltage accurately.</p>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 66 ═══ -->
+
+  <!-- ═══ SLIDE 67 ═══ -->
+  <section class="slide" data-num="67" data-section="soc-ekf" id="s67">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">39</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">State Equation: SOC Update</h2>
+        <p class="sb">Discretize the SOC equation with sample period Δt:</p>
+        <div class="eq">SOC[k+1] = SOC[k] − (Δt / (Q × 3600)) × I[k]</div>
+        <p class="sb">This is just Coulomb counting! The prediction step IS Coulomb counting. The magic of EKF is what
+          comes after — the correction step.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">State Equation: V_RC Update</h2>
+        <p class="sb">Discretize the V_RC ODE using zero-order hold:</p>
+        <div class="eq">V<sub>RC</sub>[k+1] = e<sup>−Δt/τ₁</sup> × V<sub>RC</sub>[k] + R₁ × (1 − e<sup>−Δt/τ₁</sup>) ×
+          I[k]</div>
+        <p class="sb">The exponential term e<sup>−Δt/τ₁</sup> is the decay factor. With Δt=1s and τ₁=20s:
+          e<sup>−1/20</sup> = 0.951.</p>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 68 ═══ -->
+
+  <!-- ═══ SLIDE 69 ═══ -->
+  <section class="slide" data-num="69" data-section="soc-ekf" id="s69">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">40</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">Compact Matrix Form</h2>
+        <div class="eq">x[k+1] = A × x[k] + B × I[k] + w[k]</div>
+        <div class="reveal-slide" data-has-reveals="true">
+          <div class="reveal-step" data-step="1">
+            <div class="eq">A = [1, 0;  0, e<sup>−Δt/τ₁</sup>]</div>
+          </div>
+          <div class="reveal-step" data-step="2">
+            <div class="eq">B = [−Δt/(Q×3600);  R₁×(1−e<sup>−Δt/τ₁</sup>)]</div>
+          </div>
+          <div class="reveal-step" data-step="3">
+            <p class="sb">w[k] = process noise with covariance matrix Q<sub>noise</sub>.</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">Output (Measurement) Equation</h2>
+        <div class="eq">V<sub>terminal</sub>[k] = OCV(SOC[k]) − R₀ × I[k] − V<sub>RC</sub>[k] + v[k]</div>
+        <p class="sb">This predicts what the voltage <em>should</em> be based on our state estimate. v[k] = measurement
+          noise with variance R<sub>noise</sub>.</p>
+        <div class="note note-green"><strong>Nonlinearity</strong> OCV(SOC) is nonlinear. This is why we need the
+          <em>Extended</em> Kalman Filter — it linearizes around the current estimate.</div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 70 ═══ -->
+
+  <!-- ═══ SLIDE 71 ═══ -->
+  <section class="slide" data-num="71" data-section="soc-ekf" id="s71">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">41</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">Why "Extended" Kalman Filter?</h2>
+        <p class="sb">The standard KF assumes linear models. Our output equation has OCV(SOC) which is nonlinear. The
+          EKF handles this by computing a <strong>Jacobian</strong> (local linearization) at each step.</p>
+        <div class="eq">C[k] = [∂OCV/∂SOC |<sub>SOC=predicted</sub>,  −1]</div>
+        <p class="sb">The term ∂OCV/∂SOC is the <strong>slope of the OCV-SOC curve</strong> at the current predicted
+          SOC.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">EKF Phase 1: PREDICT — State</h2>
+        <h3>Phase 1a: Predict State</h3>
+        <div class="eq">x̂⁻[k] = A × x̂[k−1] + B × I[k−1]</div>
+        <p class="sb">Propagate the state forward using the battery model. This is the "Coulomb counting + V_RC
+          prediction" step.</p>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 72 ═══ -->
+
+  <!-- ═══ SLIDE 73 ═══ -->
+  <section class="slide" data-num="73" data-section="soc-ekf" id="s73">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">42</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">EKF Phase 1: PREDICT — Covariance</h2>
+        <h3>Phase 1b: Predict Covariance</h3>
+        <div class="eq">P⁻[k] = A × P[k−1] × A<sup>T</sup> + Q<sub>noise</sub></div>
+        <p class="sb">Propagate the uncertainty forward. P grows because the model is imperfect.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">EKF Phase 2: UPDATE — Jacobian</h2>
+        <h3>Phase 2a: Compute Jacobian</h3>
+        <div class="eq">C[k] = [dOCV/dSOC |<sub>SOC=SOĈ⁻</sub>,  −1]</div>
+        <p class="sb">Linearize the output equation around the current predicted SOC. Use the dOCV_dSOC lookup table.
+        </p>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 74 ═══ -->
+
+  <!-- ═══ SLIDE 75 ═══ -->
+  <section class="slide" data-num="75" data-section="soc-ekf" id="s75">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">43</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">EKF Phase 2: UPDATE — Kalman Gain</h2>
+        <h3>Phase 2b: Kalman Gain</h3>
+        <div class="eq">K[k] = P⁻[k] × C<sup>T</sup> × (C × P⁻ × C<sup>T</sup> + R<sub>noise</sub>)<sup>−1</sup></div>
+        <p class="sb">K determines how much to trust the measurement. Large K = trust measurement. Small K = trust
+          model.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">EKF Phase 2: UPDATE — Innovation</h2>
+        <h3>Phase 2c: Innovation (Measurement Residual)</h3>
+        <div class="eq">ỹ[k] = V<sub>measured</sub> − (OCV(SOĈ⁻) − R₀ × I − V<sub>RC</sub>̂⁻)</div>
+        <p class="sb">The difference between what we measured and what the model predicted. If ỹ is large, our estimate
+          is off.</p>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 76 ═══ -->
+
+  <!-- ═══ SLIDE 77 ═══ -->
+  <section class="slide" data-num="77" data-section="soc-ekf" id="s77">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">44</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">EKF Phase 2: UPDATE — State Correction</h2>
+        <h3>Phase 2d: State Update</h3>
+        <div class="eq">x̂[k] = x̂⁻[k] + K[k] × ỹ[k]</div>
+        <p class="sb">Correct the predicted state using the Kalman gain × innovation. This is where the self-correction
+          happens!</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">EKF Phase 2: UPDATE — Covariance Update</h2>
+        <h3>Phase 2e: Covariance Update</h3>
+        <div class="eq">P[k] = (I − K[k] × C[k]) × P⁻[k]</div>
+        <p class="sb">After incorporating the measurement, our uncertainty <em>decreases</em>. P shrinks, reflecting
+          increased confidence in the estimate.</p>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 78 ═══ -->
+
+  <!-- ═══ SLIDE 79 ═══ -->
+  <section class="slide" data-num="79" data-section="soc-ekf" id="s79">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">45</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">The Kalman Gain Intuition</h2>
+        <p class="sb">The Kalman gain K automatically balances trust:</p>
+        <div class="card-grid c2">
+          <div class="card card-green"><span class="ci">📈</span>
+            <h3>Model Uncertain (large P)</h3>
+            <p>K is large → correction is large → "trust the measurement more"</p>
+          </div>
+          <div class="card card-red"><span class="ci">📉</span>
+            <h3>Measurement Noisy (large R)</h3>
+            <p>K is small → correction is small → "trust the model more"</p>
+          </div>
+        </div>
+        <div class="note note-green"><strong>Analogy</strong> Like a GPS that combines inertial sensors (model=Coulomb
+          counting) with satellite fixes (measurement=voltage). In a tunnel (no GPS), rely on inertial. In open sky, GPS
+          corrects drift.</div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">Tuning: Process Noise Q</h2>
+        <p class="sb">Q<sub>noise</sub> = diag(q<sub>SOC</sub>, q<sub>VRC</sub>). Represents model imperfection.</p>
+        <table class="dt">
+          <tr>
+            <th>q value</th>
+            <th>Effect</th>
+          </tr>
+          <tr>
+            <td>Large (1e-3)</td>
+            <td>Filter adapts fast, but noisy estimate</td>
+          </tr>
+          <tr>
+            <td>Small (1e-6)</td>
+            <td>Smooth estimate, but slow to correct errors</td>
+          </tr>
+          <tr>
+            <td>Typical start: 1e-5</td>
+            <td>Good balance for most applications</td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 80 ═══ -->
+
+  <!-- ═══ SLIDE 81 ═══ -->
+  <section class="slide" data-num="81" data-section="soc-ekf" id="s81">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">46</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">Tuning: Measurement Noise R</h2>
+        <p class="sb">R<sub>noise</sub> = voltage measurement variance.</p>
+        <div class="eq">R<sub>noise</sub> ≈ (σ<sub>voltage</sub>)² ≈ (0.01V)² = 10<sup>−4</sup> V²</div>
+        <p class="sb">For a 12-bit ADC measuring 0–5V: resolution = 5/4096 ≈ 1.2mV. Noise σ ≈ 5–10mV is typical.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">Tuning: Initial Covariance P₀</h2>
+        <p class="sb">P₀ represents initial uncertainty.</p>
+        <table class="dt">
+          <tr>
+            <th>Scenario</th>
+            <th>P₀(SOC)</th>
+            <th>P₀(V_RC)</th>
+          </tr>
+          <tr>
+            <td>SOC from OCV (confident)</td>
+            <td>0.01</td>
+            <td>0.01</td>
+          </tr>
+          <tr>
+            <td>SOC guessed</td>
+            <td>0.25</td>
+            <td>0.01</td>
+          </tr>
+        </table>
+        <div class="note note-green"><strong>In our model</strong> We set x₀ = [0.90, 0] (deliberately wrong — true is
+          0.95) and P₀ = diag(0.04, 0.01) to demonstrate convergence.</div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 82 ═══ -->
+
+  <!-- ═══ SLIDE 83 ═══ -->
+  <section class="slide" data-num="83" data-section="soc-ekf" id="s83">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">47</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-green">KALMAN FILTER</span>
+        <h2 class="st">Simulink Architecture Overview</h2>
+        <div
+          style="width:100%; min-height:180px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; position:relative; overflow:hidden; padding:16px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <svg viewBox="0 0 420 180" style="width:100%;height:auto">
+            <text x="105" y="15" fill="#ff6b6b" font-size="10" text-anchor="middle" font-family="monospace">Coulomb
+              Counting</text>
+            <text x="315" y="15" fill="#00e5a0" font-size="10" text-anchor="middle" font-family="monospace">EKF</text>
+            <rect x="15" y="25" width="190" height="140" rx="8" fill="none" stroke="#1e1e2a" stroke-width="1.5" />
+            <path d="M30 35 L30 155 L195 155" fill="none" stroke="#9896a8" stroke-width="1" />
+            <path d="M40 50 L180 140" fill="none" stroke="#00e5a0" stroke-width="1.5" />
+            <path d="M40 50 L100 80 L180 120" fill="none" stroke="#ff6b6b" stroke-width="2" />
+            <text x="150" y="100" fill="#ff6b6b" font-size="7">Drift!</text>
+            <rect x="215" y="25" width="190" height="140" rx="8" fill="none" stroke="#1e1e2a" stroke-width="1.5" />
+            <path d="M230 35 L230 155 L395 155" fill="none" stroke="#9896a8" stroke-width="1" />
+            <path d="M240 50 L380 140" fill="none" stroke="#00e5a0" stroke-width="1.5" />
+            <path d="M240 65 C280 55 320 90 380 140" fill="none" stroke="#00d4ff" stroke-width="2" />
+            <text x="320" y="75" fill="#00d4ff" font-size="7">Converges!</text>
+          </svg></div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 92 ═══ -->
+
+  <!-- ═══ SLIDE 93 ═══ -->
+  <section class="slide" data-num="93" data-section="soc-ekf" id="s93">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <span class="sn">52</span>
+    <span class="tag tag-green">KALMAN FILTER</span>
+    <h2 class="st">Chapter 4 Summary</h2>
+    <div class="card-grid c2">
+      <div class="card card-green"><span class="ci">✅</span>
+        <h3>EKF Strengths</h3>
+        <p>Self-correcting. Handles noise optimally. Works in real-time. Industry gold standard. Converges from wrong
+          initial SOC.</p>
+      </div>
+      <div class="card card-red"><span class="ci">⚠️</span>
+        <h3>EKF Challenges</h3>
+        <p>Needs accurate ECM parameters. Tuning Q/R matters. More complex than CC. Sensitive to model mismatch.</p>
+      </div>
+    </div>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+  </section>
+
+  <!-- QUIZ A -->
+  <section class="slide" data-num="quiz-a" data-section="soc-ekf" id="sQuizA">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <span class="tag tag-green">CHECKPOINT</span>
+    <h2 class="st">Quick Quiz — SOC Estimation</h2>
+    <p class="sb">Test your understanding before Part II. Click an option to check your answer.</p>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+        <div class="quiz-q">Q1: Why is OCV unreliable for LFP at mid-range SOC?</div>
+        <div class="quiz-options" data-quiz="q1">
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">A</span>LFP cells have too high internal resistance</div>
+          <div class="quiz-opt" data-correct="true" onclick="quizAnswer(this)"><span class="q-letter">B</span>The OCV-SOC curve is nearly flat from 20-80%</div>
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">C</span>LFP cannot be discharged below 20% SOC</div>
+        </div>
+        <div class="quiz-explain" data-for="q1">LFP has a flat voltage plateau (~3.2V) across mid-range, making it impossible to distinguish 30% from 70% SOC using voltage alone.</div>
+        <div class="quiz-q">Q2: What causes Coulomb Counting drift?</div>
+        <div class="quiz-options" data-quiz="q2">
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">A</span>Temperature changes in the battery</div>
+          <div class="quiz-opt" data-correct="true" onclick="quizAnswer(this)"><span class="q-letter">B</span>Current sensor offset errors accumulate via integration</div>
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">C</span>The battery capacity changes every cycle</div>
+        </div>
+        <div class="quiz-explain" data-for="q2">Even a tiny offset (1mA) accumulates over hours of integration — the fundamental weakness of open-loop CC.</div>
+      </div>
+      <div class="merged-col">
+        <div class="quiz-q">Q3: What makes EKF superior to Coulomb Counting?</div>
+        <div class="quiz-options" data-quiz="q3">
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">A</span>It uses a more accurate current sensor</div>
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">B</span>It does not require any battery model</div>
+          <div class="quiz-opt" data-correct="true" onclick="quizAnswer(this)"><span class="q-letter">C</span>It corrects drift by comparing predicted vs measured voltage</div>
+        </div>
+        <div class="quiz-explain" data-for="q3">The EKF predicts terminal voltage, compares with measurement, and uses the innovation to correct drift via the Kalman gain.</div>
+        <div class="note note-green" style="margin-top:20px"><strong>Ready for Part II?</strong> Next: Regenerative Energy — where physics meets energy recovery.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 94 ═══ -->
+  <section class="slide divider-slide" data-num="94" data-section="intro" id="s94">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <span class="sn">53</span>
+    <div class="div-num">II</div><span class="tag tag-red">PART II BEGINS</span>
+    <h2 class="div-title" style="color:var(--red)">Regenerative Energy<br />Techniques</h2>
+    <p class="ss">Recovering energy that would otherwise be wasted as heat.</p>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+  </section>
+  <!-- ═══ SLIDE 95 ═══ -->
+  <section class="slide divider-slide" data-num="95" data-section="regen-brake" id="s95">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <span class="sn">54</span>
+    <div class="div-num">05</div><span class="tag tag-red">CHAPTER 5</span>
+    <h2 class="div-title" style="color:var(--red)">Regenerative Braking</h2>
+    <p class="ss">The motor becomes a generator. Kinetic energy flows backward into the battery.</p>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+  </section>
+  <!-- ═══ SLIDE 96 ═══ -->
+  <section class="slide" data-num="96" data-section="regen-brake" id="s96">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">55</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Fundamental Principle</h2>
+        <p class="sb">In conventional braking, kinetic energy → heat (wasted). In an EV, the motor reverses: kinetic
+          energy → electrical energy → battery.</p>
+        <div
+          style="width:100%; min-height:180px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; position:relative; overflow:hidden; padding:16px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <svg viewBox="0 0 420 200" style="width:100%;height:auto">
+            <text x="210" y="15" fill="#9896a8" font-size="11" text-anchor="middle" font-family="monospace">Free Body
+              Diagram — Braking</text>
+            <rect x="100" y="80" width="220" height="40" rx="8" fill="none" stroke="#5b8cff" stroke-width="2" />
+            <text x="210" y="105" fill="#e8e6f0" font-size="10" text-anchor="middle" font-family="monospace">Vehicle
+              (m)</text>
+            <circle cx="140" cy="140" r="18" fill="none" stroke="#9896a8" stroke-width="2" />
+            <circle cx="280" cy="140" r="18" fill="none" stroke="#9896a8" stroke-width="2" />
+            <path d="M210 80 L210 50" stroke="#ff6b6b" stroke-width="2" />
+            <polygon points="210,50 205,60 215,60" fill="#ff6b6b" /><text x="220" y="55" fill="#ff6b6b" font-size="8"
+              font-family="monospace">CG</text>
+            <path d="M140 160 L140 185" stroke="#00e5a0" stroke-width="2" />
+            <polygon points="140,185 135,178 145,178" fill="#00e5a0" /><text x="140" y="195" fill="#00e5a0"
+              font-size="8" text-anchor="middle">N_front ↑</text>
+            <path d="M280 160 L280 185" stroke="#f0c040" stroke-width="2" />
+            <polygon points="280,185 275,178 285,178" fill="#f0c040" /><text x="280" y="195" fill="#f0c040"
+              font-size="8" text-anchor="middle">N_rear ↓</text>
+            <path d="M100 100 L60 100" stroke="#ff6b6b" stroke-width="2.5" />
+            <polygon points="60,100 70,96 70,104" fill="#ff6b6b" /><text x="55" y="90" fill="#ff6b6b"
+              font-size="8">Decel</text>
+            <path d="M160 70 L260 70" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="4" /><text x="210" y="68"
+              fill="#00d4ff" font-size="7" text-anchor="middle">Weight transfer →</text>
+          </svg></div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 103 ═══ -->
+
+  <!-- ═══ SLIDE 104 ═══ -->
+  <section class="slide" data-num="104" data-section="regen-brake" id="s104">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">59</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Normal Force Equations</h2>
+        <div class="eq">N<sub>front</sub> = m·g·(L<sub>r</sub>/L) + m·|a|·(h<sub>cg</sub>/L)</div>
+        <div class="eq">N<sub>rear</sub> = m·g·(L<sub>f</sub>/L) − m·|a|·(h<sub>cg</sub>/L)</div>
+        <p class="sb">L = wheelbase, L_f/L_r = CG distances, h_cg = CG height. Front load increases, rear load decreases
+          during braking.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Maximum Braking Force (Tire Limit)</h2>
+        <div class="eq">F<sub>brake_max_front</sub> = μ × N<sub>front</sub></div>
+        <div class="eq">F<sub>brake_max_rear</sub> = μ × N<sub>rear</sub></div>
+        <p class="sb">μ = tire-road friction coefficient: 0.7–0.9 (dry), 0.3–0.5 (wet). Exceed this and the wheel locks
+          up.</p>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 105 ═══ -->
+
+  <!-- ═══ SLIDE 106 ═══ -->
+  <section class="slide" data-num="106" data-section="regen-brake" id="s106">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">60</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Regen vs Friction Split</h2>
+        <div class="eq">F<sub>regen</sub> = min(F<sub>motor_max</sub>, F<sub>battery_limit</sub>,
+          F<sub>tire_limit</sub>)</div>
+        <div class="eq">F<sub>friction</sub> = F<sub>brake_total</sub> − F<sub>regen</sub></div>
+        <p class="sb">Regen gets priority (free energy!), friction fills the remainder.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Regen Force Limits</h2>
+        <ul class="red-list">
+          <li><strong>Motor torque limit:</strong> Back-EMF limits generating torque at low speeds</li>
+          <li><strong>Battery charge limit:</strong> Can't regen if SOC ≈ 100% or charging current exceeds max</li>
+          <li><strong>Tire adhesion:</strong> On driven axle only (FWD: front, RWD: rear)</li>
+          <li><strong>Speed threshold:</strong> Below ~5 km/h, regen torque too low — friction takes over</li>
+        </ul>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 107 ═══ -->
+
+  <!-- ═══ SLIDE 108 ═══ -->
+  <section class="slide" data-num="108" data-section="regen-brake" id="s108">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">61</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Strategy 1: Fixed Regen</h2>
+        <div class="eq">F<sub>regen</sub> = m × a<sub>fixed</sub>    (e.g., a<sub>fixed</sub> = 0.1g = 0.981 m/s²)</div>
+        <p class="sb">Simplest approach: constant deceleration when throttle released. Like engine braking in ICE. Used
+          in basic EVs.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Strategy 2: Proportional (Blended)</h2>
+        <p class="sb">Regen force proportional to brake pedal position. Blended braking:</p>
+        <div class="eq">pedal &lt; threshold:   F<sub>regen</sub> = K<sub>regen</sub> × pedal</div>
+        <div class="eq">pedal ≥ threshold:   F<sub>regen</sub> = F<sub>max</sub>;   F<sub>friction</sub> = K(pedal −
+          threshold)</div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 109 ═══ -->
+
+  <!-- ═══ SLIDE 110 ═══ -->
+  <section class="slide" data-num="110" data-section="regen-brake" id="s110">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">62</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Strategy 3: Optimal Series Braking</h2>
+        <p class="sb">Maximize energy: use all available regen first, then add friction.</p>
+        <ul class="red-list">
+          <li>1. Calculate total braking force needed</li>
+          <li>2. Apply maximum regen (limited by motor/battery/tire)</li>
+          <li>3. Remaining demand → friction brakes</li>
+        </ul>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Strategy Comparison</h2>
+        <table class="dt dt-full">
+          <tr>
+            <th>Strategy</th>
+            <th>Complexity</th>
+            <th>Recovery</th>
+            <th>Comfort</th>
+          </tr>
+          <tr>
+            <td>Fixed regen</td>
+            <td>Low</td>
+            <td>Moderate</td>
+            <td>Predictable</td>
+          </tr>
+          <tr>
+            <td>Proportional</td>
+            <td>Medium</td>
+            <td>Good</td>
+            <td>Smooth transition</td>
+          </tr>
+          <tr>
+            <td>Optimal series</td>
+            <td>High</td>
+            <td>Maximum</td>
+            <td>Requires calibration</td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 111 ═══ -->
+
+  <!-- ═══ SLIDE 112 ═══ -->
+  <section class="slide" data-num="112" data-section="regen-brake" id="s112">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">63</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN BRAKING</span>
+        <h2 class="st">Simulink: Model Architecture</h2>
+        <div
+          style="width:100%; min-height:180px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; position:relative; overflow:hidden; padding:16px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <svg viewBox="0 0 420 240" style="width:100%;height:auto">
+            <text x="210" y="15" fill="#9896a8" font-size="11" text-anchor="middle" font-family="monospace">Quarter-Car
+              Suspension Model</text>
+            <rect x="155" y="30" width="110" height="45" rx="8" fill="none" stroke="#5b8cff" stroke-width="2" /><text
+              x="210" y="57" fill="#e8e6f0" font-size="10" text-anchor="middle" font-family="monospace">m_s
+              (body)</text>
+            <path d="M180 75 L180 115 M180 75 L195 85 L165 95 L195 105 L175 115" stroke="#00e5a0" stroke-width="2"
+              fill="none" /><text x="155" y="100" fill="#00e5a0" font-size="8">k_s</text>
+            <rect x="225" y="80" width="20" height="32" rx="3" fill="none" stroke="#ff6b6b" stroke-width="2" /><text
+              x="255" y="100" fill="#ff6b6b" font-size="8">c_eq</text>
+            <rect x="155" y="120" width="110" height="35" rx="8" fill="none" stroke="#f0c040" stroke-width="2" /><text
+              x="210" y="142" fill="#e8e6f0" font-size="10" text-anchor="middle" font-family="monospace">m_u
+              (wheel)</text>
+            <path d="M210 155 L210 195 M210 155 L225 165 L195 175 L225 185 L210 195" stroke="#00d4ff" stroke-width="2"
+              fill="none" /><text x="235" y="180" fill="#00d4ff" font-size="8">k_t</text>
+            <path d="M140 210 L280 210" stroke="#9896a8" stroke-width="3" /><text x="210" y="228" fill="#9896a8"
+              font-size="9" text-anchor="middle" font-family="monospace">Road z_r(t)</text>
+            <path
+              d="M160 210 C170 200 180 215 190 205 C200 195 210 210 220 205 C230 195 240 210 250 205 C260 198 270 210 280 210"
+              stroke="#f0c040" stroke-width="1.5" fill="none" />
+          </svg></div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Quarter-Car: Parameters</h2>
+        <table class="dt dt-full">
+          <tr>
+            <th>Parameter</th>
+            <th>Symbol</th>
+            <th>Typical Value</th>
+            <th>Our Model</th>
+          </tr>
+          <tr>
+            <td>Sprung mass</td>
+            <td>m_s</td>
+            <td>250–400 kg</td>
+            <td>350 kg</td>
+          </tr>
+          <tr>
+            <td>Unsprung mass</td>
+            <td>m_u</td>
+            <td>30–60 kg</td>
+            <td>45 kg</td>
+          </tr>
+          <tr>
+            <td>Spring stiffness</td>
+            <td>k_s</td>
+            <td>15–30 kN/m</td>
+            <td>22 kN/m</td>
+          </tr>
+          <tr>
+            <td>Tire stiffness</td>
+            <td>k_t</td>
+            <td>150–250 kN/m</td>
+            <td>200 kN/m</td>
+          </tr>
+          <tr>
+            <td>Passive damping</td>
+            <td>c_passive</td>
+            <td>1000–2000 Ns/m</td>
+            <td>1500 Ns/m</td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 130 ═══ -->
+
+  <!-- ═══ SLIDE 131 ═══ -->
+  <section class="slide" data-num="131" data-section="regen-damper" id="s131">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">73</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Derivation: Sprung Mass EOM</h2>
+        <div class="reveal-slide" data-has-reveals="true">
+          <div class="reveal-step" data-step="1">
+            <h3>Newton's 2nd Law for sprung mass:</h3>
+          </div>
+          <div class="reveal-step" data-step="2">
+            <div class="eq">m<sub>s</sub> × z̈<sub>s</sub> = −k<sub>s</sub> × (z<sub>s</sub> − z<sub>u</sub>) −
+              c<sub>total</sub> × (ż<sub>s</sub> − ż<sub>u</sub>)</div>
+          </div>
+          <div class="reveal-step" data-step="3">
+            <p class="sb">Spring force pulls body toward wheel. Damper force opposes relative velocity.</p>
+          </div>
+          <div class="reveal-step" data-step="4">
+            <p class="sb">Rearranged: z̈<sub>s</sub> = −(k<sub>s</sub>/m<sub>s</sub>)(z<sub>s</sub>−z<sub>u</sub>) −
+              (c/m<sub>s</sub>)(ż<sub>s</sub>−ż<sub>u</sub>)</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Derivation: Unsprung Mass EOM</h2>
+        <div class="reveal-slide" data-has-reveals="true">
+          <div class="reveal-step" data-step="1">
+            <h3>Newton's 2nd Law for unsprung mass:</h3>
+          </div>
+          <div class="reveal-step" data-step="2">
+            <div class="eq">m<sub>u</sub> × z̈<sub>u</sub> = k<sub>s</sub>(z<sub>s</sub>−z<sub>u</sub>) +
+              c(ż<sub>s</sub>−ż<sub>u</sub>) − k<sub>t</sub>(z<sub>u</sub>−z<sub>r</sub>)</div>
+          </div>
+          <div class="reveal-step" data-step="3">
+            <p class="sb">Spring and damper push wheel down. Tire spring pushes wheel up from road.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 132 ═══ -->
+
+  <!-- ═══ SLIDE 133 ═══ -->
+  <section class="slide" data-num="133" data-section="regen-damper" id="s133">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">74</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">State-Space Formulation</h2>
+        <p class="sb">State variables: x₁=z_s, x₂=ż_s, x₃=z_u, x₄=ż_u</p>
+        <div class="eq">ẋ₁ = x₂</div>
+        <div class="eq">ẋ₂ = (−k<sub>s</sub>(x₁−x₃) − c(x₂−x₄)) / m<sub>s</sub></div>
+        <div class="eq">ẋ₃ = x₄</div>
+        <div class="eq">ẋ₄ = (k<sub>s</sub>(x₁−x₃) + c(x₂−x₄) − k<sub>t</sub>(x₃−z<sub>r</sub>)) / m<sub>u</sub></div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Electromagnetic Damping Coefficient</h2>
+        <div class="eq">c<sub>em</sub> = (N × B × l)² / (R<sub>coil</sub> + R<sub>load</sub>)</div>
+        <p class="sb">With N=500 turns, B=0.8T, l=0.15m, R_coil=5Ω, R_load=5Ω:</p>
+        <div class="eq">c<sub>em</sub> = (500 × 0.8 × 0.15)² / (5 + 5) = 360 Ns/m</div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 134 ═══ -->
+
+  <!-- ═══ SLIDE 135 ═══ -->
+  <section class="slide" data-num="135" data-section="regen-damper" id="s135">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">75</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Electromagnetic Force &amp; Power</h2>
+        <div class="eq">F<sub>damper</sub> = c<sub>em</sub> × v<sub>rel</sub></div>
+        <div class="eq">P<sub>harvested</sub> = c<sub>em</sub> × v<sub>rel</sub>² = c<sub>em</sub> × (ż<sub>s</sub> −
+          ż<sub>u</sub>)²</div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Electrical Power Output</h2>
+        <div class="eq">P<sub>electrical</sub> = c<sub>em</sub> × v<sub>rel</sub>² × R<sub>load</sub> /
+          (R<sub>coil</sub> + R<sub>load</sub>)</div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 136 ═══ -->
+
+  <!-- ═══ SLIDE 137 ═══ -->
+  <section class="slide" data-num="137" data-section="regen-damper" id="s137">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">76</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Maximum Power Transfer</h2>
+        <div class="eq">P<sub>max</sub> = c<sub>em</sub> × v<sub>rel</sub>² / 4    (when R<sub>load</sub> =
+          R<sub>coil</sub>)</div>
+        <p class="sb">Impedance matching! Maximum power transfer when load resistance equals source resistance.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Road Surface Models (ISO 8608)</h2>
+        <table class="dt dt-full">
+          <tr>
+            <th>ISO 8608 Class</th>
+            <th>G_d [m³/cycle]</th>
+            <th>Description</th>
+            <th>Indian Example</th>
+          </tr>
+          <tr>
+            <td>A</td>
+            <td>16×10⁻⁶</td>
+            <td>Very smooth</td>
+            <td>New National Highways</td>
+          </tr>
+          <tr>
+            <td>B</td>
+            <td>64×10⁻⁶</td>
+            <td>Good road</td>
+            <td>State Highways (maintained)</td>
+          </tr>
+          <tr>
+            <td>C (our model)</td>
+            <td>256×10⁻⁶</td>
+            <td>Average</td>
+            <td>Indian urban roads</td>
+          </tr>
+          <tr>
+            <td>D</td>
+            <td>1024×10⁻⁶</td>
+            <td>Poor</td>
+            <td>Rural roads, construction</td>
+          </tr>
+          <tr>
+            <td>E</td>
+            <td>4096×10⁻⁶</td>
+            <td>Very poor</td>
+            <td>Unpaved, damaged roads</td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 138 ═══ -->
+
+  <!-- ═══ SLIDE 139 ═══ -->
+  <section class="slide" data-num="139" data-section="regen-damper" id="s139">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">77</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Road Profile in Simulink</h2>
+        <p class="sb">Generated as filtered white noise:</p>
+        <div class="eq">z_r(t) = White Noise → [√(2π·G_d·v)] → [1/(s + 2π·n₀·v)]</div>
+        <table class="dt">
+          <tr>
+            <th>Block</th>
+            <th>Library</th>
+            <th>Configuration</th>
+          </tr>
+          <tr>
+            <td>Band-Limited White Noise</td>
+            <td>Sources</td>
+            <td>Power: 1, Ts: 0.001</td>
+          </tr>
+          <tr>
+            <td>Gain</td>
+            <td>Math</td>
+            <td>√(2π × Gd_n0 × v_vehicle)</td>
+          </tr>
+          <tr>
+            <td>Transfer Function</td>
+            <td>Continuous</td>
+            <td>Num: [1], Den: [1, 2π×n₀×v]</td>
+          </tr>
+        </table>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Simulink: Model Architecture</h2>
+        <div
+          style="width:100%; min-height:180px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; position:relative; overflow:hidden; padding:16px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <svg viewBox="0 0 420 220" style="width:100%;height:auto">
+            <text x="210" y="15" fill="#9896a8" font-size="11" text-anchor="middle" font-family="monospace">Comfort vs
+              Energy Trade-off</text>
+            <path d="M60 30 L60 190 L380 190" fill="none" stroke="#9896a8" stroke-width="2" />
+            <text x="220" y="210" fill="#9896a8" font-size="9" text-anchor="middle" font-family="monospace">c_em
+              (Ns/m)</text>
+            <path d="M80 170 C150 155 220 120 290 70 C330 45 360 35 375 30" fill="none" stroke="#00e5a0"
+              stroke-width="2.5" /><text x="385" y="30" fill="#00e5a0" font-size="8">Power (W)</text>
+            <path d="M80 170 C130 165 180 155 230 135 C280 100 330 60 375 30" fill="none" stroke="#ff6b6b"
+              stroke-width="2.5" /><text x="385" y="45" fill="#ff6b6b" font-size="8">a_rms</text>
+            <circle cx="240" cy="130" r="8" fill="none" stroke="#f0c040" stroke-width="2.5" /><text x="260" y="128"
+              fill="#f0c040" font-size="9" font-weight="bold">Sweet Spot</text>
+            <path d="M240 138 L240 190" stroke="#f0c040" stroke-width="1" stroke-dasharray="4" />
+          </svg></div>
+        <div class="note note-green"><strong>The Sweet Spot</strong> Maximize energy while keeping a_rms &lt; 0.5 m/s²
+          per ISO 2631.</div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Student Exercise: Road Classes</h2>
+        <table class="dt dt-full">
+          <tr>
+            <th>Road Class</th>
+            <th>Change</th>
+            <th>Expected Power</th>
+            <th>Expected Comfort</th>
+          </tr>
+          <tr>
+            <td>A (smooth)</td>
+            <td>Gd=16e-6</td>
+            <td>Very low</td>
+            <td>Excellent</td>
+          </tr>
+          <tr>
+            <td>C (default)</td>
+            <td>Gd=256e-6</td>
+            <td>Moderate</td>
+            <td>Good</td>
+          </tr>
+          <tr>
+            <td>D (poor)</td>
+            <td>Gd=1024e-6</td>
+            <td>High</td>
+            <td>Degraded</td>
+          </tr>
+          <tr>
+            <td>E (very poor)</td>
+            <td>Gd=4096e-6</td>
+            <td>Very high</td>
+            <td>Poor</td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 146 ═══ -->
+
+  <!-- ═══ SLIDE 147 ═══ -->
+  <section class="slide" data-num="147" data-section="regen-damper" id="s147">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">81</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Student Exercise: Impedance Matching</h2>
+        <p class="sb">Try R_load = 3, 5, 7, 10 Ohms. Find which maximizes P_electrical.</p>
+        <div class="note note-green"><strong>Expected Result</strong> Maximum at R_load = R_coil = 5Ω (impedance
+          matching). Confirms theory.</div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-red">REGEN DAMPER</span>
+        <h2 class="st">Chapter 6 Summary</h2>
+        <div class="card-grid c2">
+          <div class="card card-green"><span class="ci">✅</span>
+            <h3>Key Points</h3>
+            <p>Harvests 100–400W on Indian roads. Based on Faraday's law. Quarter-car model validated. Trade-off:
+              comfort vs energy.</p>
+          </div>
+          <div class="card card-red"><span class="ci">🔬</span>
+            <h3>From Omkar's Lab</h3>
+            <p>This is a real R&amp;D project at the EV Centre of Excellence. The regenerative damper concept is
+              actively being prototyped for Indian road conditions.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ B -->
+  <section class="slide" data-num="quiz-b" data-section="regen-damper" id="sQuizB">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <span class="tag tag-red">CHECKPOINT</span>
+    <h2 class="st">Quick Quiz — Regenerative Energy</h2>
+    <p class="sb">Test your understanding of regen braking and damper harvesting.</p>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+        <div class="quiz-q">Q1: What limits regen braking at low speeds?</div>
+        <div class="quiz-options" data-quiz="q4">
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">A</span>Battery is fully charged</div>
+          <div class="quiz-opt" data-correct="true" onclick="quizAnswer(this)"><span class="q-letter">B</span>Back-EMF is too low for the motor to generate torque</div>
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">C</span>Tire friction coefficient drops below 0.1</div>
+        </div>
+        <div class="quiz-explain" data-for="q4">At low speeds, back-EMF is proportional to speed — too little for meaningful braking torque.</div>
+        <div class="quiz-q">Q2: When is max power transferred from regen damper?</div>
+        <div class="quiz-options" data-quiz="q5">
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">A</span>When R_load = 0 (short circuit)</div>
+          <div class="quiz-opt" data-correct="true" onclick="quizAnswer(this)"><span class="q-letter">B</span>When R_load = R_coil (impedance matching)</div>
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">C</span>When R_load is as large as possible</div>
+        </div>
+        <div class="quiz-explain" data-for="q5">Maximum power transfer theorem: P_max when load resistance equals source resistance.</div>
+      </div>
+      <div class="merged-col">
+        <div class="quiz-q">Q3: Which ISO 8608 class = typical Indian urban roads?</div>
+        <div class="quiz-options" data-quiz="q6">
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">A</span>Class A (very smooth)</div>
+          <div class="quiz-opt" data-correct="true" onclick="quizAnswer(this)"><span class="q-letter">B</span>Class C (average)</div>
+          <div class="quiz-opt" data-correct="false" onclick="quizAnswer(this)"><span class="q-letter">C</span>Class E (very poor)</div>
+        </div>
+        <div class="quiz-explain" data-for="q6">Class C (Gd=256e-6) = typical Indian urban. D/E are rural/damaged; A is new highways.</div>
+        <div class="note note-red" style="margin-top:20px"><strong>Great work!</strong> Now let's build in the Hands-On Lab.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 148 ═══ -->
+
+  <!-- ═══ SLIDE 149 ═══ -->
+  <section class="slide divider-slide" data-num="149" data-section="handson" id="s149">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <span class="sn">82</span>
+    <div class="div-num">🔧</div><span class="tag tag-gold">HANDS-ON</span>
+    <h2 class="div-title" style="color:var(--gold)">Hands-On Lab<br />&amp; Closing</h2>
+    <p class="ss">Build it. Test it. Understand it.</p>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+  </section>
+  <!-- ═══ SLIDE 150 ═══ -->
+  <section class="slide" data-num="150" data-section="handson" id="s150">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">83</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-gold">HANDS-ON</span>
+        <h2 class="st">Lab Overview</h2>
+        <div class="card-grid c3">
+          <div class="card card-gold"><span class="ci">🔋</span>
+            <h3>Lab A</h3>
+            <p>Build OCV + Coulomb Counting models. Observe drift.</p>
+          </div>
+          <div class="card card-gold"><span class="ci">🎯</span>
+            <h3>Lab B</h3>
+            <p>Build EKF model. See convergence from wrong initial SOC.</p>
+          </div>
+          <div class="card card-gold"><span class="ci">♻️</span>
+            <h3>Lab C</h3>
+            <p>Build regen braking. Compare energy recovery strategies.</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-gold">HANDS-ON</span>
+        <h2 class="st">Lab: Model Setup</h2>
+        <p class="sb">Step 1: Open MATLAB R2025b. Step 2: Navigate to EV_Workshop_Models folder. Step 3: Run
+          setup_parameters.m. Verify all variables load.</p>
+        <div class="note note-red"><strong>CRITICAL</strong> If setup_parameters.m hasn't been run, NO Simulink model
+          will work. Always run this first!</div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 151 ═══ -->
+
+  <!-- ═══ SLIDE 152 ═══ -->
+  <section class="slide" data-num="152" data-section="handson" id="s152">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">84</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-gold">HANDS-ON</span>
+        <h2 class="st">Lab: Build &amp; Compare</h2>
+        <p class="sb">Follow the Simulink Implementation Guide document. Build each model block by block. Compare your
+          results with expected outputs.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-gold">HANDS-ON</span>
+        <h2 class="st">Key Takeaways</h2>
+        <div class="card-grid c2">
+          <div class="card card-green"><span class="ci">🔋</span>
+            <h3>SOC Estimation</h3>
+            <p>OCV = snapshot at rest. CC = real-time but drifts. EKF = gold standard (predict + correct). All three are
+              used in production BMS.</p>
+          </div>
+          <div class="card card-red"><span class="ci">♻️</span>
+            <h3>Energy Recovery</h3>
+            <p>Regen braking recovers 15–30% of braking energy. Regen dampers harvest 100–400W from road vibrations.
+              Both improve range and efficiency.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 153 ═══ -->
+
+  <!-- ═══ SLIDE 154 ═══ -->
+  <section class="slide" data-num="154" data-section="handson" id="s154">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">85</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-gold">HANDS-ON</span>
+        <h2 class="st">The Bigger Picture</h2>
+        <p class="sb">Smart Mobility isn't just cameras and LiDAR. It's about making every joule count — from the
+          chemistry inside the cell to the damper absorbing a pothole. AI enables all of this at scale.</p>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-gold">HANDS-ON</span>
+        <h2 class="st">Resources: Books</h2>
+        <ul class="">
+          <li>G.L. Plett, "Battery Management Systems, Vol I &amp; II" (Artech House)</li>
+          <li>M. Ehsani, "Modern Electric, Hybrid Electric, and Fuel Cell Vehicles" (CRC Press)</li>
+          <li>D. Karnopp, "Vehicle Stability" (Marcel Dekker)</li>
+          <li>L. Zuo &amp; X. Tang, "Large-scale vibration energy harvesting" (JIMS, 2013)</li>
+        </ul>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 155 ═══ -->
+
+  <!-- ═══ SLIDE 156 ═══ -->
+  <section class="slide" data-num="156" data-section="handson" id="s156">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div><span class="sn">86</span>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+    <div class="merged-slide-container">
+      <div class="merged-col">
+
+        <span class="tag tag-gold">HANDS-ON</span>
+        <h2 class="st">Resources: Datasets &amp; Tools</h2>
+        <ul class="">
+          <li>NASA Prognostics Center — Battery cycling datasets</li>
+          <li>CALCE Battery Group, Univ. of Maryland</li>
+          <li>WLTP/MIDC drive cycles — MATLAB Powertrain Blockset</li>
+          <li>MathWorks: "SOC Estimation Using EKF" (File Exchange)</li>
+          <li>Gregory Plett's MOOC: "Algorithms for BMS" (Coursera)</li>
+        </ul>
+
+      </div>
+      <div class="merged-col">
+
+        <span class="tag tag-gold">HANDS-ON</span>
+        <h2 class="st">Resources: Papers</h2>
+        <ul class="">
+          <li>Plett (2004) — EKF for BMS, J. Power Sources</li>
+          <li>Zhang et al. (2016) — Regen shock absorber, ECM</li>
+          <li>Gao et al. (2015) — Design of regen EM damper, SAE</li>
+        </ul>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══ SLIDE 157 ═══ -->
+
+  <!-- ═══ SLIDE 158 ═══ -->
+  <section class="slide" data-num="158" data-section="handson" id="s158">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <span class="sn">87</span>
+    <span class="tag tag-gold">HANDS-ON</span>
+    <h2 class="st">Q&amp;A</h2>
+    <div class="big-stat"><span class="big-num">❓</span><span class="big-label">Questions?</span></div>
+    <p class="sb">Ask about theory, Simulink implementation, real-world applications, or anything else.</p>
+    <div class="sf">Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+  </section>
+  <section class="slide hero-slide" data-num="159" data-section="handson" id="s159">
+    <div class="brand-tr">PowerNetPro Pvt. Ltd.</div>
+    <div class="hero-bg">
+      <div class="grid-lines"></div>
+      <div class="orb o1"></div>
+      <div class="orb o2"></div>
+    </div>
+    <h2 class="hero-title" style="font-size:clamp(36px,5vw,72px)">Thank You.</h2>
+    <p class="hero-sub">Build. Simulate. Innovate.</p>
+    <div class="badge-row"><span class="badge">Omkar</span><span class="badge">EV Centre of Excellence</span><span
+        class="badge">MIT-WPU, Pune</span></div>
+    <p
+      style="color:var(--muted);font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-top:40px">
+      Smart Mobility with AI &amp; Computer Vision · Day 4 · 41 Slides</p>
+    <div class="sf">Presented by Omkar · EV Centre of Excellence, MIT-WPU | PowerNetPro Pvt.Ltd.</div>
+  </section>
+  <div id="progressBar" style="width:0%"></div>
+  <div id="kbHelp">
+    <div class="kh-title">Keyboard Shortcuts</div><kbd>&uarr;</kbd><kbd>&darr;</kbd> Navigate
+    slides<br><kbd>&rarr;</kbd> Reveal next step<br><kbd>Home</kbd> First slide<br><kbd>End</kbd> Last
+    slide<br><kbd>?</kbd> Toggle this help
+  </div>
+  <script>
+    (function () {
+      const slides = document.querySelectorAll('.slide');
+      const nav = document.getElementById('navDots');
+      const counter = document.getElementById('slideCounter');
+      const progressBar = document.getElementById('progressBar');
+      const kbHelp = document.getElementById('kbHelp');
+      const total = slides.length;
+      const secMap = { 'intro': 'a-intro', 'soc-intro': 'a-green', 'soc-ocv': 'a-green', 'soc-cc': 'a-green', 'soc-ekf': 'a-green', 'regen-brake': 'a-red', 'regen-damper': 'a-red', 'handson': 'a-gold' };
+      const secNames = { 'intro': 'Introduction', 'soc-intro': 'SOC Basics', 'soc-ocv': 'OCV Method', 'soc-cc': 'Coulomb Counting', 'soc-ekf': 'Kalman Filter', 'regen-brake': 'Regen Braking', 'regen-damper': 'Regen Damper', 'handson': 'Hands-On Lab' };
+
+      // Create nav dots
+      slides.forEach((_, i) => { const d = document.createElement('button'); d.className = 'nd'; d.onclick = () => slides[i].scrollIntoView({ behavior: 'smooth' }); nav.appendChild(d) });
+      const dots = [...nav.querySelectorAll('.nd')];
+
+      // Progress bar update on scroll
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        progressBar.style.width = pct + '%';
+      }, { passive: true });
+
+      // Intersection Observer
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const idx = [...slides].indexOf(e.target);
+            const sec = e.target.dataset.section;
+            dots.forEach(d => d.classList.remove('active', 'a-green', 'a-red', 'a-gold', 'a-intro'));
+            if (dots[idx]) { dots[idx].classList.add('active'); if (secMap[sec]) dots[idx].classList.add(secMap[sec]) }
+            counter.innerHTML = String(idx + 1).padStart(2, '0') + ' / ' + total + '<span id="slideSection">' + (secNames[sec] || '') + '</span>';
+            // Reveal only the first step; subsequent steps are advanced via keyboard.
+            const firstStep = e.target.querySelector('.reveal-step');
+            if (firstStep) firstStep.classList.add('visible');
+          }
+        });
+      }, { threshold: .4 });
+      slides.forEach(s => obs.observe(s));
+
+      // Keyboard nav
+      let currentRevealSlide = null, currentStep = 0;
+      document.addEventListener('keydown', e => {
+        if (e.key === '?') { e.preventDefault(); kbHelp.classList.toggle('show'); return }
+        const cur = [...slides].findIndex(s => { const r = s.getBoundingClientRect(); return r.top >= -100 && r.top <= innerHeight / 2 });
+        if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); if (cur < slides.length - 1) slides[cur + 1].scrollIntoView({ behavior: 'smooth' }) }
+        if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); if (cur > 0) slides[cur - 1].scrollIntoView({ behavior: 'smooth' }) }
+        if (e.key === 'Home') { e.preventDefault(); slides[0].scrollIntoView({ behavior: 'smooth' }) }
+        if (e.key === 'End') { e.preventDefault(); slides[slides.length - 1].scrollIntoView({ behavior: 'smooth' }) }
+        if (e.key === 'ArrowRight' || e.key === 'Enter') {
+          if (cur < 0) return;
+          const slide = slides[cur];
+          const steps = [...slide.querySelectorAll('.reveal-step')];
+          if (steps.length) {
+            if (currentRevealSlide !== slide) { currentRevealSlide = slide; currentStep = 0 }
+            if (currentStep < steps.length) { steps[currentStep].classList.add('visible'); currentStep++ }
+          }
+        }
+      });
+
+      // OCV Widget
+      const ocvSlider = document.getElementById('ocv-slider');
+      const ocvVal = document.getElementById('ocv-val');
+      const ocvSoc = document.getElementById('ocv-soc');
+      const socBp = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
+      const ocvData = [300, 328, 342, 348, 352, 355, 358, 360, 363, 366, 370, 373, 377, 381, 386, 391, 397, 403, 408, 414, 420];
+      if (ocvSlider) {
+        ocvSlider.oninput = function () {
+          const v = parseInt(this.value); ocvVal.textContent = (v / 100).toFixed(2);
+          let soc = 0; for (let i = 0; i < ocvData.length - 1; i++) { if (v >= ocvData[i] && v <= ocvData[i + 1]) { soc = socBp[i] + (socBp[i + 1] - socBp[i]) * (v - ocvData[i]) / (ocvData[i + 1] - ocvData[i]); break } }
+          if (v >= 420) soc = 100; if (v <= 300) soc = 0; ocvSoc.textContent = Math.round(soc);
+        }
+      }
+
+      // Drift Widget
+      const driftSlider = document.getElementById('drift-slider');
+      const driftVal = document.getElementById('drift-val');
+      const driftErr = document.getElementById('drift-err');
+      if (driftSlider) {
+        driftSlider.oninput = function () {
+          const offset = parseInt(this.value); driftVal.textContent = offset;
+          const err = (offset / 1000 * 3600) / (3 * 3600) * 100; driftErr.textContent = err.toFixed(2);
+        }
+      }
+
+      // Regen Calculator
+      window.calcRegen = function () {
+        const m = parseFloat(document.getElementById('regen-mass').value) || 1500;
+        const v1 = (parseFloat(document.getElementById('regen-v1').value) || 60) / 3.6;
+        const v2 = (parseFloat(document.getElementById('regen-v2').value) || 0) / 3.6;
+        const eff = (parseFloat(document.getElementById('regen-eff').value) || 70) / 100;
+        const E = 0.5 * m * (v1 * v1 - v2 * v2) * eff;
+        document.getElementById('regen-result').textContent =
+          (E / 1000).toFixed(1) + ' kJ = ' + (E / 3600).toFixed(2) + ' Wh';
+      };
+    })();
+  </script>
+</body>
+
+</html>

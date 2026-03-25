@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"d:/EV_LAB/Smart Mobiltiy Session/SmartMobilityPPT\" -type f -exec ls -lh {})",
+      "Read(//d/EV_LAB/Smart Mobiltiy Session/SmartMobilityPPT/**)",
+      "Bash(npm install:*)"
+    ]
+  }
+}

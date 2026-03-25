@@ -1,0 +1,28 @@
+1: Infographic showing energy flow in an electric vehicle — battery to motor to wheels with regenerative braking arrows flowing back, dark background with neon green/blue energy flow lines
+2: Screenshot of MATLAB R2025b interface showing Simulink block diagram of a battery model with scope outputs, dark theme IDE
+3: Analogy diagram: fuel gauge for ICE vehicle (simple float sensor) vs battery SOC estimation (complex algorithm with V, I, T inputs), split comparison, dark background
+4: Cross-section diagram of a lithium-ion cell showing anode (graphite), cathode (NMC), separator, electrolyte, with lithium ion flow arrows during charge and discharge, technical illustration style, dark background
+5: Graph showing battery capacity vs C-rate: capacity decreases as discharge rate increases, with curves at different temperatures (-10°C, 25°C, 45°C), clean plot with grid, dark background
+6: OCV vs SOC characteristic curve for NMC cell: S-shaped curve from 3.0V at 0% to 4.2V at 100%, with annotations showing steep regions at extremes and flatter middle region, dark background with green curve
+7: Voltage vs time graph showing pulse discharge test: voltage drops instantly (R₀ effect) then slowly (RC effect), and recovers when current stops, annotated with R₀ and τ₁ labels, dark background
+8: Flowchart: Battery at rest → Measure V_terminal → Since I=0, V_terminal ≈ OCV → Lookup table → SOC estimate. Clean technical diagram, dark background, green accent arrows
+9: OCV-SOC curves overlaid for NMC, LFP, NCA, and LTO chemistries on same axes, showing different shapes — NMC S-curve, LFP flat plateau, NCA steep, LTO low voltage. Clean scientific plot, dark background
+10: GITT test profile showing current pulses followed by rest periods, with voltage response showing instant R₀ drop, RC relaxation, then OCV at equilibrium. Annotated clearly. Dark background, green/white lines
+11: Graph showing charge and discharge OCV curves for an LFP cell, with visible gap (hysteresis) in the 20-80% SOC range. Annotated with h(SOC) arrow. Dark background
+12: Simulink block diagram showing: Current Source → Battery Plant subsystem (with ECM) → V_measured output → OCV Estimator subsystem (with rest detector, lookup table, switch) → SOC_estimated. Clean technical diagram, dark background, green blocks
+13: Simulink scope screenshot showing two lines: smooth green True SOC curve and yellow staircase OCV estimate, with clear mismatch during discharge phases. Time axis 0-3600s. Dark scope background
+14: Graph showing True SOC (straight line) vs Coulomb Counting with different sensor offsets (0mA perfect overlap, 10mA slight divergence, 50mA large divergence, 100mA extreme divergence). Time axis 0-10 hours. Dark background, multiple colored lines
+15: Simulink block diagram of Model 2: Current source branches to Battery Plant, Ideal Counter, and Noisy Counter (with offset + noise). Three SOC signals merge at comparison scope. Technical diagram, dark background
+16: Simulink scope showing three SOC curves: True (green), Ideal (blue, overlapping), Noisy (red, gradually diverging). Second plot shows error: flat blue line and linearly growing red line. Dark scope background
+17: Two-panel diagram: Left shows "Predict" step (model propagates state forward), Right shows "Correct" step (measurement pulls estimate toward reality). Arrows showing the feedback loop. Clean diagram, dark background, blue/green accents
+18: 1RC Thevenin equivalent circuit diagram: OCV voltage source → series R₀ → parallel R₁ and C₁ → terminal voltage. With V_RC labeled across RC pair. Clean circuit schematic, dark background, green/white lines
+19: Simulink block diagram of complete EKF model: Battery Plant → V_measured → EKF Estimator subsystem (with 6 stages labeled A through F) → SOC_estimated. Comparison with Coulomb counting. Technical diagram, dark background, blue/green blocks
+20: Simulink scope: Three SOC curves. Green=True starting at 95%. Blue=Coulomb (overlapping). Red=EKF starting at 90%, converging toward green within 200 seconds. Dark background
+21: Side-by-side comparison: Left plot shows Coulomb counting drifting over time (growing error). Right plot shows EKF maintaining accuracy despite same sensor noise. Clear visual proof. Dark background
+22: Split diagram: Left = ICE car with red brake discs glowing hot (energy wasted as heat). Right = EV with green arrows flowing from wheels back through motor to battery. Dark background, high contrast
+23: Free body diagram of car during braking showing: weight transfer arrow from rear to front, CG position, normal forces N_front and N_rear, deceleration arrow. Technical diagram, dark background
+24: Simulink block diagram of regen braking model: Drive Cycle → Vehicle Dynamics → Regen Controller → Energy Accounting. Four subsystems connected. Dark background, red/white blocks
+25: Split comparison: Left = conventional hydraulic damper with heat radiation waves. Right = electromagnetic regenerative damper with arrows showing electricity flowing to battery. Technical illustration, dark background
+26: Quarter-car model diagram: sprung mass (m_s) connected to unsprung mass (m_u) via spring (k_s) and damper (c_eq). Unsprung mass connected to ground via tire spring (k_t). Road input z_r at bottom. Clear engineering diagram, dark background
+27: Simulink block diagram of regen damper model: Road Generator → Quarter-Car (4 integrators) → Regen Damper (power calc) → Energy Accumulator. With scopes. Dark background, red blocks
+28: Trade-off curve: X-axis = c_em, Y-axis-left = harvested power (increasing), Y-axis-right = RMS acceleration (increasing). Sweet spot marked. Clean plot, dark background
