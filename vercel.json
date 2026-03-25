@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/EV_Workshop_Day4_Presentation.html" }
+  ]
+}
